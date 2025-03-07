@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sulfuric Acid Producers Map</title>
+    <!-- Load the required libraries in the correct order -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        #header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        #container {
+            display: flex;
+            height: calc(100vh - 130px);
+        }
+        #sidebar {
+            width: 300px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            overflow-y: auto;
+        }
+        #map {
+            flex-grow: 1;
+            height: 100%;
+        }
+        .filter-section {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+        }
+        .filter-section h3 {
+            margin-top: 0;
+        }
+        .legend {
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .legend-item {
+            margin: 5px 0;
+        }
+        .marker-icon {
+            display: inline-block;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        .marker-sulfur { background-color: #3388ff; }
+        .marker-metallurgical { background-color: #dc3545; }
+        .marker-regeneration { background-color: #28a745; }
+        .marker-other { background-color: #6c757d; }
+        .footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .stat-box {
+            background-color: #e9ecef;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .stat-box h4 {
+            margin: 0 0 5px 0;
+        }
+        .search-box {
+            margin-bottom: 15px;
+        }
+        #search-input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .plant-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+        .plant-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            cursor: pointer;
+        }
+        .plant-item:hover {
+            background-color: #f0f0f0;
+        }
+        @media (max-width: 768px) {
+            #container {
+                flex-direction: column;
+                height: auto;
+            }
+            #sidebar {
+                width: 100%;
+                max-height: 300px;
+            }
+            #map {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Sulfuric Acid Producers Map</h1>
+        <p>Interactive map of sulfuric acid production facilities across North America</p>
+    </div>
+    
+    <div id="container">
+        <div id="sidebar">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search by company or location...">
+            </div>
+            
+            <div class="filter-section">
+                <h3>Filters</h3>
+                <div>
+                    <input type="checkbox" id="filter-sulfur" checked>
+                    <label for="filter-sulfur">Sulfur Burner</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="filter-metallurgical" checked>
+                    <label for="filter-metallurgical">Metallurgical</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="filter-regeneration" checked>
+                    <label for="filter-regeneration">Acid Regeneration</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="filter-other" checked>
+                    <label for="filter-other">Other Types</label>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3>Country</h3>
+                <div>
+                    <input type="checkbox" id="country-usa" checked>
+                    <label for="country-usa">USA</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="country-canada" checked>
+                    <label for="country-canada">Canada</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="country-mexico" checked>
+                    <label for="country-mexico">Mexico</label>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3>Statistics</h3>
+                <div class="stat-box">
+                    <h4>Plant Count by Type</h4>
+                    <div id="plant-type-stats"></div>
+                </div>
+                <div class="stat-box">
+                    <h4>Plant Count by Country</h4>
+                    <div id="country-stats"></div>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h3>Producer List</h3>
+                <div class="plant-list" id="plant-list"></div>
+            </div>
+        </div>
+        
+        <div id="map"></div>
+    </div>
+    
+    <div class="footer">
+        Created with Leaflet and MarkerCluster. Data extracted from Sulfuric Acid Producers data.
+    </div>
+    
+    <script>
+        // Producer data - loaded directly from data file
+        const producerData = [
+  {
+    "company": "AdvanSix",
+    "address": "905 East Randolph Road ",
+    "city": "Hopewell",
+    "state": "Virginia",
+    "country": "USA",
+    "coordinates": "37\u00b0 18' 3\" N, 77\u00b0 16' 14\" W",
+    "latitude": 37.30083333333333,
+    "longitude": -77.27055555555556,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "PCI",
+    "address": "2001 Jackson Street",
+    "city": "Pasadena ",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "29\u00ba 44' 33\" N, 95\u00ba 11' 30\" W",
+    "latitude": 29.7425,
+    "longitude": -95.19166666666668,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1650 MTPD"
+  },
+  {
+    "company": "American Smelting and Refining Company - ASARCO",
+    "address": "Ray Complex Hayden SmelterP.O. Box 8 640 Asarco Avenue",
+    "city": "Hayden",
+    "state": "Arizona",
+    "country": "USA",
+    "coordinates": "33\u00ba 0' 8\" N, 110\u00ba 46' 22\" W",
+    "latitude": 33.00222222222222,
+    "longitude": -110.77277777777778,
+    "plantType": "Metallurgical",
+    "gasSource": "Copper Inco Flash Furnace ",
+    "capacity": "2820 MTPD"
+  },
+  {
+    "company": "BASF \n\tCorporation Agricultural Products",
+    "address": "3150 Highway JJ",
+    "city": "Palmyra",
+    "state": "Missouri",
+    "country": "USA",
+    "coordinates": "39\u00b0 50' 3\" N, 91\u00b0 25' 56\" W",
+    "latitude": 39.83416666666667,
+    "longitude": -91.43222222222222,
+    "plantType": "Acid Regeneration",
+    "gasSource": "H2S Gas",
+    "capacity": "260 STPD"
+  },
+  {
+    "company": "Mosaic (No.5 Plant)",
+    "address": "2501 Bonnie Mine Road",
+    "city": "Bartow",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b0 51' 38\" N, 81\u00b0 55' 57\" W",
+    "latitude": 27.860555555555557,
+    "longitude": -81.9325,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1002 MTPD"
+  },
+  {
+    "company": "Mosaic (No.6 Plant)",
+    "address": "2501 Bonnie Mine Road",
+    "city": "Bartow",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b0 51' 38\" N, 81\u00b0 56' 0\" W",
+    "latitude": 27.860555555555557,
+    "longitude": -81.93333333333334,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1306 MTPD"
+  },
+  {
+    "company": "Chemtrade",
+    "address": "1400 Olin Rd",
+    "city": "Beaumont",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "30\u00b0 2' 44\" N, 94\u00b0 4' 10\" W",
+    "latitude": 30.045555555555556,
+    "longitude": -94.06944444444444,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Spend Acid",
+    "capacity": "825 MTPD"
+  },
+  {
+    "company": "Chemtrade",
+    "address": "7680 Ottawa Road",
+    "city": "Cairo",
+    "state": "Ohio",
+    "country": "USA",
+    "coordinates": "40\u00b050'55\"N 84\u00b004'51\"W",
+    "latitude": 40.84861111111111,
+    "longitude": -84.08083333333333,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "227 MTPD"
+  },
+  {
+    "company": "Chemtrade Plant A & B",
+    "address": "Not available",
+    "city": "Oregon",
+    "state": "Ohio",
+    "country": "USA",
+    "coordinates": "41\u00b040'54\"N 83\u00b027'26\"W",
+    "latitude": 41.681666666666665,
+    "longitude": -83.45722222222223,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Spend Acid",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Chemtrade Plant 1 (Formerly Koch)",
+    "address": "140 Goes In Lodge Road",
+    "city": "Riverton ",
+    "state": "Wyoming",
+    "country": "USA",
+    "coordinates": "42\u00b0 59' 52\" N, 108\u00b0 24' 58\" W",
+    "latitude": 42.99777777777778,
+    "longitude": -108.41611111111112,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Chemtrade Plant 2 (Formerly Koch)",
+    "address": "140 Goes In Lodge Road",
+    "city": "Riverton ",
+    "state": "Wyoming",
+    "country": "USA",
+    "coordinates": "42\u00b0 59' 53.5\" N, 108\u00b0 24' 58\" W",
+    "latitude": 42.998194444444444,
+    "longitude": -108.41611111111112,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Spend Acid",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Chemtrade",
+    "address": "10889 LA-1 (South)",
+    "city": "Shreveport",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "32\u00b0 21' 36\" N, 93\u00b0 37' 57\" W",
+    "latitude": 32.36,
+    "longitude": -93.6325,
+    "plantType": "Acid Regeneration / Sulfur Burner",
+    "gasSource": "Alkylation Spend Acid / Elemental Sulfur",
+    "capacity": "590 STPD"
+  },
+  {
+    "company": "Chemtrade",
+    "address": "5201 W 21st Street  ",
+    "city": "Tulsa ",
+    "state": "Oklahoma",
+    "country": "USA",
+    "coordinates": "36\u00b0 8' 9\" N, 96\u00b0 3' 6\" W",
+    "latitude": 36.13583333333333,
+    "longitude": -96.05166666666666,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Island Energy Services (Formerly Chevron",
+    "address": "Not available",
+    "city": "Kapolei",
+    "state": "Hawaii",
+    "country": "USA",
+    "coordinates": "21\u00b0\u00a018'\u00a027\"\u00a0N, 158\u00b0 6' 51\" W",
+    "latitude": 21.3075,
+    "longitude": -158.11416666666665,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Spent Acid",
+    "capacity": "90 MTPD"
+  },
+  {
+    "company": "Conoco Phillips",
+    "address": "2200 Old Spanish Trail",
+    "city": "Westlake",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "30\u00b014'39\"N 93\u00b016'18\"W",
+    "latitude": 30.24416666666667,
+    "longitude": -93.27166666666666,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Spent Acid",
+    "capacity": "84225 STPA"
+  },
+  {
+    "company": "Conoco Phillips",
+    "address": "1660 West Anaheim Street",
+    "city": "Wilmington",
+    "state": "California",
+    "country": "USA",
+    "coordinates": "33\u00b0 46' 36\" N, 118\u00b0 17\u2019 0\" W",
+    "latitude": NaN,
+    "longitude": NaN,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Spent Acid",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Cornerstone Chemical ",
+    "address": "10800 River Road",
+    "city": "Westwego ",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "29\u00ba 57' 44\" N, 90\u00ba 16' 21\" W",
+    "latitude": 29.96222222222222,
+    "longitude": -90.2725,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Spent MMA Acid",
+    "capacity": "960 MTPD"
+  },
+  {
+    "company": "Doe Run",
+    "address": "881 Main Street",
+    "city": "Herculaneum",
+    "state": "Missouri",
+    "country": "USA",
+    "coordinates": "38\u00ba 15' 37\" N, 90\u00ba 22' 37\" W",
+    "latitude": 38.26027777777778,
+    "longitude": -90.37694444444443,
+    "plantType": "Metallurgical",
+    "gasSource": "Lead Sinter Machine",
+    "capacity": "180 MTPD"
+  },
+  {
+    "company": "Chemours",
+    "address": "12501 Strang Road",
+    "city": "La Porte",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "29\u00b0 41' 57\" N, 95\u00b0 2' 8\" W",
+    "latitude": 29.699166666666667,
+    "longitude": -95.03555555555555,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Spend Acid / Elemental Sulfur",
+    "capacity": "940 MTPD"
+  },
+  {
+    "company": "Southern States Chemical",
+    "address": "1 Kerr-McGee Road ",
+    "city": "Savannah ",
+    "state": "Georgia",
+    "country": "USA",
+    "coordinates": "32\u00b0 4' 59\" N,\u00a0 81\u00b0 1' 36\" W",
+    "latitude": 32.08305555555556,
+    "longitude": -81.02666666666667,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "350400 MTPA"
+  },
+  {
+    "company": "El Dorado Chemical",
+    "address": "4500 North West Avenue",
+    "city": "El Dorado",
+    "state": "Arkansas",
+    "country": "USA",
+    "coordinates": "33\u00b0 15' 59\" N, 92\u00b0 41' 24\" W",
+    "latitude": 33.26638888888889,
+    "longitude": -92.69,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "360 STPD"
+  },
+  {
+    "company": "Flint Hills Resources ",
+    "address": "13115 Courthouse Boulevard",
+    "city": "Rosemount",
+    "state": "Minnesota",
+    "country": "USA",
+    "coordinates": "44\u00b0 45' 56\" N, 93\u00b0 2' 26\" W ",
+    "latitude": 44.76555555555556,
+    "longitude": -93.04055555555556,
+    "plantType": "Acid Regeneration / Sulfur Burner",
+    "gasSource": "Spent Sulfuric Acid / Elemental Sulfur",
+    "capacity": "440 STPD"
+  },
+  {
+    "company": "Freeport McMoran",
+    "address": "PO BOX 220 2598 Highway 61 South ",
+    "city": "Fort Madison",
+    "state": "Iowa",
+    "country": "USA",
+    "coordinates": "40\u00ba 35' 7\" N, 91\u00ba 25' 22\" W",
+    "latitude": 40.58527777777778,
+    "longitude": -91.42277777777778,
+    "plantType": "Metallurgical",
+    "gasSource": "MO- Roaster / Sulfur Burner - Elemental Sulfur",
+    "capacity": "390 MTPD"
+  },
+  {
+    "company": "Freeport McMoran",
+    "address": "Not available",
+    "city": "Miami",
+    "state": "Arizona",
+    "country": "USA",
+    "coordinates": "33\u00ba 24' 52\" N, 110\u00ba 51' 30\" W",
+    "latitude": 33.41444444444444,
+    "longitude": -110.85833333333333,
+    "plantType": "Metallurgical",
+    "gasSource": "Copper IsaSmelt technology",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Freeport McMoran",
+    "address": "Dos Pobres Copper Mine Graham County",
+    "city": "Safford",
+    "state": "Arizona",
+    "country": "USA",
+    "coordinates": "32\u00b0 55' 49\" N, 109\u00b0 42' 14\" W",
+    "latitude": 32.930277777777775,
+    "longitude": -109.7038888888889,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1550 MTPD"
+  },
+  {
+    "company": "General Chemical No.1 Acid Plant",
+    "address": "8579 North Texas Road ",
+    "city": "Anacortes",
+    "state": "Washington",
+    "country": "USA",
+    "coordinates": "48\u00b028'47\"N 122\u00b033'28\"W",
+    "latitude": 48.47972222222222,
+    "longitude": -122.55777777777777,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Spent Acid",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "General Chemical No.2 Acid Plant",
+    "address": "8579 North Texas Road ",
+    "city": "Anacortes",
+    "state": "Washington",
+    "country": "USA",
+    "coordinates": "\u00a0 48\u00b0 28' 46.5\" N, 122\u00b0 33' 29\" W",
+    "latitude": 48.47958333333334,
+    "longitude": -122.55805555555555,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Spent Acid",
+    "capacity": "556 STPD"
+  },
+  {
+    "company": "General Chemical No.3 Acid Plant",
+    "address": "8579 North Texas Road ",
+    "city": "Anacortes",
+    "state": "Washington",
+    "country": "USA",
+    "coordinates": "\u00a048\u00b028'49\"N 122\u00b033'29\"W",
+    "latitude": 48.48027777777778,
+    "longitude": -122.55805555555555,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Spent Acid",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "General Chemical ",
+    "address": "525 Castro Street",
+    "city": "Richmond",
+    "state": "California",
+    "country": "USA",
+    "coordinates": "\u00a037\u00b0\u00a056'\u00a023\"\u00a0N, 122\u00b0 22' 41\" W",
+    "latitude": 37.939722222222215,
+    "longitude": -122.37805555555555,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Spent Acid / Elemental Sulfur",
+    "capacity": "219,000 MTPA"
+  },
+  {
+    "company": "Horsehead Corporation",
+    "address": "300 Frankfort Road",
+    "city": "Monaca",
+    "state": "Pennsylvania",
+    "country": "USA",
+    "coordinates": "40\u00b039'59\"N 80\u00b020'12\"W",
+    "latitude": 40.66638888888889,
+    "longitude": -80.33666666666666,
+    "plantType": "Metallurgical",
+    "gasSource": "Zinc",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Innophos",
+    "address": "10810 Highway 75 ",
+    "city": "Geismer ",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "30\u00b013'05\"N 91\u00b003'09\"W",
+    "latitude": 30.218055555555555,
+    "longitude": -91.0525,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Ioneer",
+    "address": "Not available",
+    "city": "Esmeralda County",
+    "state": "Nevada",
+    "country": "USA",
+    "coordinates": "37\u00b051'15\"N 117\u00b051'46\"W",
+    "latitude": 37.85416666666667,
+    "longitude": -117.86277777777777,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "3500 MTPD"
+  },
+  {
+    "company": "Itafos (East Plant)",
+    "address": "3010 Conda Road ",
+    "city": "Soda Springs",
+    "state": "Idaho",
+    "country": "USA",
+    "coordinates": "42\u00b0 44' 21\" N, 111\u00b0 32' 25\" W",
+    "latitude": 42.73916666666667,
+    "longitude": -111.54027777777777,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1500 STPD"
+  },
+  {
+    "company": "JR Simplot (300 Plant)",
+    "address": "1150 West Highway 30 W",
+    "city": "Pocatello",
+    "state": "Idaho",
+    "country": "USA",
+    "coordinates": "42\u00b054'28\"N 112\u00b031'29\"W",
+    "latitude": 42.907777777777774,
+    "longitude": -112.52472222222222,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1750 STPD"
+  },
+  {
+    "company": "JR Simplot (400 Plant)",
+    "address": "1150 West Highway 30 W",
+    "city": "Pocatello",
+    "state": "Idaho",
+    "country": "USA",
+    "coordinates": "42\u00b054'28\"N 112\u00b031'29\"W",
+    "latitude": 42.907777777777774,
+    "longitude": -112.52472222222222,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "JR Simplot (Lurgi Plant)",
+    "address": "515 South Highway 430",
+    "city": "Rock Springs",
+    "state": "Wyoming",
+    "country": "USA",
+    "coordinates": "41\u00b0 32' 29\" N, 109\u00b0 7' 55\" W",
+    "latitude": 41.54138888888889,
+    "longitude": -109.13194444444444,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1905 MTPD"
+  },
+  {
+    "company": "JR Simplot (Monsanto Plant)",
+    "address": "515 South Highway 430",
+    "city": "Rock Springs",
+    "state": "Wyoming",
+    "country": "USA",
+    "coordinates": "41\u00b0 32' 25\" N, 109\u00b0 7' 58\" W",
+    "latitude": 41.540277777777774,
+    "longitude": -109.13277777777778,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1197 MTPD"
+  },
+  {
+    "company": "Rio Tinto Kennecott Utah Copper Corp",
+    "address": "Smelter & Refinery 12000 West 2100 South ",
+    "city": "Magna",
+    "state": "Utah",
+    "country": "USA",
+    "coordinates": "40\u00ba 43' 24\" N, 112\u00ba 11' 46\" W",
+    "latitude": 40.723333333333336,
+    "longitude": -112.19611111111111,
+    "plantType": "Metallurgical",
+    "gasSource": "Copper Outotec Flash Furnace",
+    "capacity": "3500 MTPD"
+  },
+  {
+    "company": "Langeloth Mettalurgical Company",
+    "address": "10 Langeloth Plant Drive Box 608",
+    "city": "Langeloth",
+    "state": "Pennsylvania",
+    "country": "USA",
+    "coordinates": "40\u00b021'50\"N 80\u00b024'03\"W",
+    "latitude": 40.36388888888889,
+    "longitude": -80.40083333333334,
+    "plantType": "Metallurgical",
+    "gasSource": "Molybdenum",
+    "capacity": "240 STPD"
+  },
+  {
+    "company": "Lucite International",
+    "address": "2665 Fite Road",
+    "city": "Memphis",
+    "state": "Tennessee",
+    "country": "USA",
+    "coordinates": "35\u00b0 16' 8\" N, 89\u00b0 58' 37\" W",
+    "latitude": 35.26888888888889,
+    "longitude": -89.97694444444444,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Spent Acid from MMA",
+    "capacity": "680 MTPD"
+  },
+  {
+    "company": "Lucite International",
+    "address": "6350 North Twin City Highway",
+    "city": "Nederland ",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "30\u00b0 0' 43\" N, 94\u00b0 1' 29\" W",
+    "latitude": 30.011944444444445,
+    "longitude": -94.02472222222222,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Spent Acid from MMA",
+    "capacity": "625 MTPD"
+  },
+  {
+    "company": "Martin Operating Parternship",
+    "address": "669 County Road",
+    "city": "Plainview ",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "34\u00b0 13' 26\" N, 101\u00b0 45' 18\" W",
+    "latitude": 34.223888888888894,
+    "longitude": -101.755,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "500 STPD"
+  },
+  {
+    "company": "Mississippi Phosphate Corp (Plant No.2)",
+    "address": "PO BOX 848, 601 Industrial Road (Highway 611)",
+    "city": "Pascagoula",
+    "state": "Mississippi",
+    "country": "USA",
+    "coordinates": "30\u00b0 21' 6\" N, 88\u00b0 30' 1\" W",
+    "latitude": 30.351666666666667,
+    "longitude": -88.50027777777778,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1588 MTPD"
+  },
+  {
+    "company": "Mississippi Phosphate Corp (Plant No.3)",
+    "address": "PO BOX 848, 601 Industrial Road (Highway 611)",
+    "city": "Pascagoula",
+    "state": "Mississippi",
+    "country": "USA",
+    "coordinates": "30\u00b0 21' 5\" N, 88\u00b0 30' 3\" W",
+    "latitude": 30.35138888888889,
+    "longitude": -88.50083333333333,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1588 MTPF"
+  },
+  {
+    "company": "Mosaic Company (No.4 Plant)",
+    "address": "3200 Highway 60 West",
+    "city": "Bartow",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b0 54' 28\" N, 81\u00b0 55' 5\" W",
+    "latitude": 27.907777777777778,
+    "longitude": -81.91805555555555,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2600 STPD"
+  },
+  {
+    "company": "Mosaic Company (No.5 Plant)",
+    "address": "3200 Highway 60 West",
+    "city": "Bartow",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b0 54' 30\" N, 81\u00b0 55' 4\" W",
+    "latitude": 27.90833333333333,
+    "longitude": -81.91777777777779,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2600 STPD"
+  },
+  {
+    "company": "Mosaic Company (No.6 Plant)",
+    "address": "3200 Highway 60 West",
+    "city": "Bartow",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b0 54' 25\" N, 81\u00b0 55' 3\" W",
+    "latitude": 27.90694444444444,
+    "longitude": -81.9175,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2600 STPD"
+  },
+  {
+    "company": "Mosaic Company (Plant 1)",
+    "address": "9959 Highway 18 St James",
+    "city": "St James Parish",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "30\u00ba 5' 15\" N, 90\u00ba 55' 16\" W",
+    "latitude": 30.0875,
+    "longitude": -90.92111111111112,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1800 MTPD"
+  },
+  {
+    "company": "Mosaic Company (Plant 2)",
+    "address": "9959 Highway 18 St James",
+    "city": "St James Parish",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "30\u00ba 5' 14\" N, 90\u00ba 55' 15\" W",
+    "latitude": 30.08722222222222,
+    "longitude": -90.92083333333333,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1800 MTPD"
+  },
+  {
+    "company": "Mosaic Company (No.4 Plant)",
+    "address": "4390 C.R. 640 West",
+    "city": "Bartow",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b0\u00a050'\u00a026\"\u00a0N 81\u00b0\u00a054'\u00a041\"\u00a0W",
+    "latitude": 27.840555555555554,
+    "longitude": -81.9113888888889,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2100 STPD"
+  },
+  {
+    "company": "Mosaic Company (No.5 Plant)",
+    "address": "4390 C.R. 640 West",
+    "city": "Bartow",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b0\u00a050'\u00a026\"\u00a0N 81\u00b0\u00a054'\u00a034\"\u00a0W",
+    "latitude": 27.840555555555554,
+    "longitude": -81.90944444444445,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2800 STPD"
+  },
+  {
+    "company": "Mosaic Company (No.6 Plant)",
+    "address": "4390 C.R. 640 West",
+    "city": "Bartow",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b0\u00a050'\u00a023\"\u00a0N 81\u00b0\u00a054'\u00a030\"\u00a0W",
+    "latitude": 27.83972222222222,
+    "longitude": -81.90833333333335,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2750 STPD"
+  },
+  {
+    "company": "Mosaic New Wales Plant No.1",
+    "address": "3095 Highway 640",
+    "city": "Mulberry",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b049'53\"N 82\u00b003'04\"W",
+    "latitude": 27.83138888888889,
+    "longitude": -82.05111111111111,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "3400 STPD"
+  },
+  {
+    "company": "Mosaic New Wales Plant No.2",
+    "address": "3095 Highway 640",
+    "city": "Mulberry",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b049'53\"N 82\u00b003'02\"W",
+    "latitude": 27.83138888888889,
+    "longitude": -82.05055555555555,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "3400 STPD"
+  },
+  {
+    "company": "Mosaic New Wales Plant No.3",
+    "address": "3095 Highway 640",
+    "city": "Mulberry",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b049'53\"N 82\u00b002'59\"W",
+    "latitude": 27.83138888888889,
+    "longitude": -82.04972222222221,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "3400 STPD"
+  },
+  {
+    "company": "Mosaic New Wales Plant No.4",
+    "address": "3095 Highway 640",
+    "city": "Mulberry",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b0\u00a049'\u00a050\"\u00a0N 82\u00b0 3' 6\" W",
+    "latitude": 27.830555555555556,
+    "longitude": -82.05166666666666,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2900 STPD"
+  },
+  {
+    "company": "Mosaic New Wales Plant No.5",
+    "address": "3095 Highway 640",
+    "city": "Mulberry",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b049'49\"N 82\u00b003'03\"W",
+    "latitude": 27.830277777777777,
+    "longitude": -82.05083333333333,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2900 STPD"
+  },
+  {
+    "company": "Mosaic - Riverview  - Plant 7",
+    "address": "8813 US-41 South",
+    "city": "Riverview",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00ba 51' 39\" N, 82\u00ba 23' 23\" W",
+    "latitude": 27.860833333333336,
+    "longitude": -82.38972222222223,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "3200 STPD"
+  },
+  {
+    "company": "Mosaic - Riverview  - Plant 8",
+    "address": "8813 US-41 South",
+    "city": "Riverview",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00ba 51' 40\" N, 82\u00ba 23' 20\" W",
+    "latitude": 27.861111111111114,
+    "longitude": -82.3888888888889,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2700 STPD"
+  },
+  {
+    "company": "Mosaic - Riverview  - Plant 9",
+    "address": "8813 US-41 South",
+    "city": "Riverview",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00ba 51' 43\" N, 82\u00ba 23' 23\" W",
+    "latitude": 27.861944444444447,
+    "longitude": -82.38972222222223,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "3400 STPD"
+  },
+  {
+    "company": "Mosaic - South Pierce - No.10 Plant",
+    "address": "7450 Highway 630",
+    "city": "Mulberry",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b0\u00a045'\u00a053\"\u00a0N, 81\u00b0 56' 18\" W",
+    "latitude": 27.764722222222222,
+    "longitude": -81.93833333333333,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "3000 STPD"
+  },
+  {
+    "company": "Mosaic - South Pierce  - No.11 Plant",
+    "address": "7450 Highway 630",
+    "city": "Mulberry",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "27\u00b0\u00a045'\u00a053\"\u00a0N, 81\u00b0 56' 16\" W",
+    "latitude": 27.764722222222222,
+    "longitude": -81.93777777777778,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "3000 STPD"
+  },
+  {
+    "company": "Mosaic - Uncle Sam - A Plant",
+    "address": "7250 Highway 44",
+    "city": "St James Parish",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "30\u00ba 2' 20\" N, 90\u00ba 49' 45\" W",
+    "latitude": 30.03888888888889,
+    "longitude": -90.82916666666667,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1500 MTPD"
+  },
+  {
+    "company": "Mosaic - Uncle Sam - D Plant",
+    "address": "7250 Highway 44",
+    "city": "St James Parish",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "30\u00ba 2' 15\" N, 90\u00ba 49' 44\" W",
+    "latitude": 30.0375,
+    "longitude": -90.82888888888888,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1500 MTPD"
+  },
+  {
+    "company": "Mosaic - Uncle Sam - E Plant",
+    "address": "7250 Highway 44",
+    "city": "St James Parish",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "30\u00ba 2' 14\" N, 90\u00ba 49' 47\" W",
+    "latitude": 30.037222222222223,
+    "longitude": -90.82972222222222,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2900 MTPD"
+  },
+  {
+    "company": "Newmont Mining Corporation",
+    "address": "Not available",
+    "city": "Carlin",
+    "state": "Nevada",
+    "country": "USA",
+    "coordinates": "40\u00b0 47' 8\" N, 116\u00b0 11' 0\" W",
+    "latitude": 40.785555555555554,
+    "longitude": -116.18333333333334,
+    "plantType": "Metallurgical",
+    "gasSource": "Gold Roaster",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Nouryon Functional Chemicals",
+    "address": "13440 Highway 43 North",
+    "city": "Axis",
+    "state": "Alabama",
+    "country": "USA",
+    "coordinates": "30\u00b058'07\"N 88\u00b001'16\"W",
+    "latitude": 30.96861111111111,
+    "longitude": -88.02111111111111,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "850 STPD"
+  },
+  {
+    "company": "Nyrstar NV",
+    "address": "PO Box 1104 1800 Zinc Plant Road",
+    "city": "Clarksville",
+    "state": "Tennessee",
+    "country": "USA",
+    "coordinates": "36\u00ba 31' 0\" N, 87\u00ba 24' 21\" W",
+    "latitude": 36.516666666666666,
+    "longitude": -87.40583333333333,
+    "plantType": "Metallurgical",
+    "gasSource": "Zinc",
+    "capacity": "456 MTPD"
+  },
+  {
+    "company": "PCS Nitrogen",
+    "address": "3115 Highway 30",
+    "city": "Geismer ",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "30\u00b0 13' 14\" N, 91\u00b0 3' 21\" W",
+    "latitude": 30.220555555555553,
+    "longitude": -91.05583333333333,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "PCS Phosphate - Plant 5",
+    "address": "1530 NC HWY 306 South",
+    "city": "Aurora",
+    "state": "North Carolina",
+    "country": "USA",
+    "coordinates": "35\u00b022'25\"N 76\u00b046'45\"W",
+    "latitude": 35.37361111111111,
+    "longitude": -76.77916666666667,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "3600 STPD"
+  },
+  {
+    "company": "PCS Phosphate - Plant 6",
+    "address": "1530 NC HWY 306 South",
+    "city": "Aurora",
+    "state": "North Carolina",
+    "country": "USA",
+    "coordinates": "35\u00b022'25\"N 76\u00b046'45\"W",
+    "latitude": 35.37361111111111,
+    "longitude": -76.77916666666667,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "3800 STPD"
+  },
+  {
+    "company": "PCS Phosphate - Plant 7",
+    "address": "1530 NC HWY 306 South",
+    "city": "Aurora",
+    "state": "North Carolina",
+    "country": "USA",
+    "coordinates": "35\u00b022'25\"N 76\u00b046'45\"W",
+    "latitude": 35.37361111111111,
+    "longitude": -76.77916666666667,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "4500 STPD"
+  },
+  {
+    "company": "PCS Phosphate - Suwannee River Complex - Plant C",
+    "address": "State Road 137, E of US 41, North of White Springs",
+    "city": "Hamilton County",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "30\u00b026'52\"N 82\u00b051'53\"W",
+    "latitude": 30.447777777777777,
+    "longitude": -82.86472222222221,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2300 STPD"
+  },
+  {
+    "company": "PCS Phosphate - Suwannee River Complex - Plant D",
+    "address": "State Road 137, E of US 41, North of White Springs",
+    "city": "Hamilton County",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "30\u00b026'53\"N 82\u00b051'53\"W",
+    "latitude": 30.448055555555555,
+    "longitude": -82.86472222222221,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2300 STPD"
+  },
+  {
+    "company": "PCS Phosphate - Suwannee River Complex - Plant E",
+    "address": "State Road 137, E of US 41, North of White Springs",
+    "city": "Hamilton County",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "30\u00b026'56\"N 82\u00b051'55\"W",
+    "latitude": 30.448888888888888,
+    "longitude": -82.86527777777778,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2500 STPD"
+  },
+  {
+    "company": "PCS Phosphate - Suwannee River Complex - Plant F",
+    "address": "State Road 137, E of US 41, North of White Springs",
+    "city": "Hamilton County",
+    "state": "Florida",
+    "country": "USA",
+    "coordinates": "30\u00b026'57\"N 82\u00b051'53\"W",
+    "latitude": 30.449166666666667,
+    "longitude": -82.86472222222221,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2500 STPD"
+  },
+  {
+    "company": "PVS Chemical Solutions ",
+    "address": "55 Lee Street",
+    "city": "Buffalo",
+    "state": "New York",
+    "country": "USA",
+    "coordinates": "42\u00b0 51' 54.5\" N, 78\u00b0 50' 29\" W",
+    "latitude": 42.86513888888889,
+    "longitude": -78.84138888888889,
+    "plantType": "Acid Regeneration / Sulfur Burner",
+    "gasSource": "Alkylation Spend Acid / Elemental Sulfur",
+    "capacity": "330 STPD"
+  },
+  {
+    "company": "PVS Chemical Solutions ",
+    "address": "12260 South Carondolet Avenue",
+    "city": "Chicago",
+    "state": "Illinois",
+    "country": "USA",
+    "coordinates": "41\u00b040'19\"N 87\u00b033'05\"W",
+    "latitude": 41.67194444444444,
+    "longitude": -87.55138888888888,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "127750 STPA"
+  },
+  {
+    "company": "Eco Services- Unit No. 1 ",
+    "address": "1275 Airline Highway",
+    "city": "Baton Rouge",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "30\u00b0 30' 34\" N, 91\u00b0 11' 14\" W",
+    "latitude": 30.509444444444444,
+    "longitude": -91.18722222222223,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Spent Acid",
+    "capacity": "700 MTPD"
+  },
+  {
+    "company": "Eco Services- Unit No. 2",
+    "address": "1275 Airline Highway",
+    "city": "Baton Rouge",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "30\u00b0 30' 36\" N, 91\u00b0 11' 5\" W",
+    "latitude": 30.51,
+    "longitude": -91.18472222222222,
+    "plantType": "Acid Regeneration / Sulfur Burner",
+    "gasSource": "Alkylation Spend Acid / Elemental Sulfur",
+    "capacity": "1500 MTPD"
+  },
+  {
+    "company": "Eco Services ",
+    "address": "20720 South Wilmington Avenue",
+    "city": "Carson",
+    "state": "California",
+    "country": "USA",
+    "coordinates": "33\u00b0 50' 36\" N, 118\u00b0 13' 59\" W",
+    "latitude": 33.843333333333334,
+    "longitude": -118.23305555555555,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid ",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Eco Services",
+    "address": "3429 Park Street",
+    "city": "Baytown",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "29\u00b0 44' 52\" N, 95\u00b0 0' 8\" W",
+    "latitude": 29.747777777777777,
+    "longitude": -95.00222222222222,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid ",
+    "capacity": "800 MTPD"
+  },
+  {
+    "company": "Eco Services - Unit 4 ",
+    "address": "2000 East Michigan Street",
+    "city": "Hammond ",
+    "state": "Indiana",
+    "country": "USA",
+    "coordinates": "41\u00b036'29\"N 87\u00b028'42\"W",
+    "latitude": 41.60805555555556,
+    "longitude": -87.47833333333334,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid ",
+    "capacity": "1400 STPD"
+  },
+  {
+    "company": "Eco Services - No.2 Plant",
+    "address": "8615 Manchester Boulevard",
+    "city": "Houston",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "29\u00b043'07\"N 95\u00b016'11\"W",
+    "latitude": 29.71861111111111,
+    "longitude": -95.26972222222223,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid ",
+    "capacity": "1250 STPD"
+  },
+  {
+    "company": "Eco Services - No.8 Plant",
+    "address": "8615 Manchester Boulevard",
+    "city": "Houston",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "29\u00b043'10\"N 95\u00b016'15\"W",
+    "latitude": 29.71944444444444,
+    "longitude": -95.27083333333333,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid ",
+    "capacity": "1690 STPD"
+  },
+  {
+    "company": "Eco Services ",
+    "address": "100 Mococo Road",
+    "city": "Martinez ",
+    "state": "California",
+    "country": "USA",
+    "coordinates": "38\u00ba 2' 3\" N, 122\u00ba 6' 56\" W",
+    "latitude": 38.034166666666664,
+    "longitude": -122.11555555555555,
+    "plantType": "Acid Regeneration / Sulfur Burner",
+    "gasSource": "Alkylation Spend Acid / Elemental Sulfur",
+    "capacity": "1834 STPD"
+  },
+  {
+    "company": "Rohm and Haas Texas - No.1 Acid Plant",
+    "address": "1900 Tidal Road",
+    "city": "Deer Park",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "29\u00b043'58\"N 95\u00b006'18\"W",
+    "latitude": 29.732777777777777,
+    "longitude": -95.10499999999999,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid ",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Rohm and Haas Texas - No.2 Acid Plant",
+    "address": "1900 Tidal Road",
+    "city": "Deer Park",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "29\u00b044'01\"N 95\u00b006'17\"W",
+    "latitude": 29.733611111111113,
+    "longitude": -95.10472222222222,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid ",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Rohm and Haas Texas - No.3 Acid Plant",
+    "address": "1900 Tidal Road",
+    "city": "Deer Park",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "29\u00b044'01\"N 95\u00b006'14\"W",
+    "latitude": 29.733611111111113,
+    "longitude": -95.10388888888889,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid ",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Southern States Chemical",
+    "address": "1580 Columbia Nitrogen Road",
+    "city": "Augusta",
+    "state": "Georgia",
+    "country": "USA",
+    "coordinates": "33\u00b0\u00a026'\u00a00\"\u00a0N, 81\u00b0 56' 10\" W",
+    "latitude": 33.43333333333333,
+    "longitude": -81.93611111111112,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "850 STPD"
+  },
+  {
+    "company": "Southern States Chemical - Plant No.1 ",
+    "address": "1600 E President Street",
+    "city": "Savannah ",
+    "state": "Georgia",
+    "country": "USA",
+    "coordinates": "32\u00b0 4' 23\" N, 81\u00b0 3' 47\" W",
+    "latitude": 32.073055555555555,
+    "longitude": -81.06305555555555,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "135 STPD"
+  },
+  {
+    "company": "Southern States Chemical - Plant No.2",
+    "address": "1600 E President Street",
+    "city": "Savannah ",
+    "state": "Georgia",
+    "country": "USA",
+    "coordinates": "32\u00b0 4' 23\" N, 81\u00b0 3' 45\" W",
+    "latitude": 32.073055555555555,
+    "longitude": -81.0625,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "225 STPD"
+  },
+  {
+    "company": "Southern States Chemical - Plant No.1 ",
+    "address": "2600 US -241 South",
+    "city": "Wilmington",
+    "state": "North Carolina",
+    "country": "USA",
+    "coordinates": "34\u00b016' 22\" N, 77\u00b0 57' 10\" W",
+    "latitude": 34.272777777777776,
+    "longitude": -77.95277777777778,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "125 STPD"
+  },
+  {
+    "company": "Southern States Chemical - Plant No.3",
+    "address": "2600 US -241 South",
+    "city": "Wilmington",
+    "state": "North Carolina",
+    "country": "USA",
+    "coordinates": "34\u00b016'23\"N 77\u00b057'11\"W",
+    "latitude": 34.27305555555555,
+    "longitude": -77.95305555555557,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "106 STPD"
+  },
+  {
+    "company": "Tampa Electric Company",
+    "address": "Not available",
+    "city": "Not available",
+    "state": "Not available",
+    "country": "USA",
+    "coordinates": "27\u00b0 43' 43\" N, 81\u00b0 59' 24\" W",
+    "latitude": 27.72861111111111,
+    "longitude": -81.99,
+    "plantType": "Not specified",
+    "gasSource": "Hydrogen Sulphide",
+    "capacity": "180 MTPD"
+  },
+  {
+    "company": "Tesoro Refining and Marketing",
+    "address": "150 Solano Way",
+    "city": "Martinez ",
+    "state": "California",
+    "country": "USA",
+    "coordinates": "38\u00ba 1' 29\" N, 122\u00ba 3' 25\" W",
+    "latitude": 38.02472222222222,
+    "longitude": -122.05694444444444,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid/Hydrogen Sulphide",
+    "capacity": "435.4 MTPD"
+  },
+  {
+    "company": "Valero",
+    "address": "6701 FM 119, HCR Box 36",
+    "city": "Sunray",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "35\u00b0 57' 10\" N, 101\u00b0 52' 37\" W",
+    "latitude": 35.95277777777778,
+    "longitude": -101.87694444444443,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid ",
+    "capacity": "100 STPD"
+  },
+  {
+    "company": "Veolia",
+    "address": "1400 Park Avenue",
+    "city": "Linden ",
+    "state": "New Jersey",
+    "country": "USA",
+    "coordinates": "40\u00b038'22\"N 74\u00b013'12\"W",
+    "latitude": 40.63944444444444,
+    "longitude": -74.22,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid ",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Veolia",
+    "address": "3460 Highway 44",
+    "city": "Darrow",
+    "state": "Louisiana",
+    "country": "USA",
+    "coordinates": "30\u00ba 7' 31\" N, 90\u00ba 54' 43\" W",
+    "latitude": 30.12527777777778,
+    "longitude": -90.91194444444444,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid ",
+    "capacity": "1635 MTPD"
+  },
+  {
+    "company": "Veolia",
+    "address": "11215 Brower Road",
+    "city": "North Bend ",
+    "state": "Ohio",
+    "country": "USA",
+    "coordinates": "39\u00b0 6' 56\" N, 84\u00b0 48' 42\" W",
+    "latitude": 39.11555555555556,
+    "longitude": -84.81166666666667,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "300 STPD"
+  },
+  {
+    "company": "Veolia",
+    "address": "766 Governor Lea Road",
+    "city": "Delaware City ",
+    "state": "Delaware",
+    "country": "USA",
+    "coordinates": "39\u00b0 35' 33\" N, 75\u00b0 38' 16\" W",
+    "latitude": 39.5925,
+    "longitude": -75.63777777777779,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid/Hydrogen Sulphide",
+    "capacity": "500 MTPD"
+  },
+  {
+    "company": "Veolia",
+    "address": "HC-66 400 Harris Road ",
+    "city": "Wurtland",
+    "state": "Kentucky",
+    "country": "USA",
+    "coordinates": "38\u00b0 33' 20\" N, 82\u00b0 47' 21\" W",
+    "latitude": 38.55555555555555,
+    "longitude": -82.78916666666666,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "260,000 STPA"
+  },
+  {
+    "company": "Veolia",
+    "address": "1201 Bellwood Road",
+    "city": "Richmond",
+    "state": "Virginia",
+    "country": "USA",
+    "coordinates": "37\u00b0 25' 1\" N, 77\u00b0 24' 32\" W",
+    "latitude": 37.41694444444444,
+    "longitude": -77.4088888888889,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "300 STPD"
+  },
+  {
+    "company": "Veolia",
+    "address": "6500 Trowbridge Drive ",
+    "city": "El Paso",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "31\u00b0 45' 56\" N, 106\u00b0 23' 45\" W",
+    "latitude": 31.765555555555554,
+    "longitude": -106.39583333333334,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid/Hydrogen Sulphide",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Veolia",
+    "address": "6500 Trowbridge Drive ",
+    "city": "El Paso",
+    "state": "Texas",
+    "country": "USA",
+    "coordinates": "31\u00b0 45' 55\" N, 106\u00b0 23' 43\" W",
+    "latitude": 31.76527777777778,
+    "longitude": -106.39527777777778,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid/Hydrogen Sulphide",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Wisconsin Public Service Corporation",
+    "address": "Not available",
+    "city": "Wausau",
+    "state": "Wisconsin",
+    "country": "USA",
+    "coordinates": "44\u00b0 51' 30\" N 89\u00b0 38' 58\" W",
+    "latitude": 44.858333333333334,
+    "longitude": -89.64944444444446,
+    "plantType": "Metallurgical",
+    "gasSource": "Thermal Regeneration ",
+    "capacity": "50 MTPD"
+  },
+  {
+    "company": "Irving Oil Limited - Plant 1",
+    "address": "Not available",
+    "city": "Saint John",
+    "state": "New Brunswick",
+    "country": "Canada",
+    "coordinates": "45\u00b0 16' 45\" N, 66\u00b0 0' 53\" W",
+    "latitude": 45.27916666666667,
+    "longitude": -66.01472222222222,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Alkylation Waste Acid/Hydrogen Sulphide",
+    "capacity": "278 MTPD"
+  },
+  {
+    "company": "Irving Oil Limited - Plant 2",
+    "address": "Not available",
+    "city": "Saint John",
+    "state": "New Brunswick",
+    "country": "Canada",
+    "coordinates": "45\u00b0 16' 45\" N, 66\u00b0 0' 53\" W",
+    "latitude": 45.27916666666667,
+    "longitude": -66.01472222222222,
+    "plantType": "Acid Regeneration",
+    "gasSource": "Claus Tail Gas",
+    "capacity": "29.2 MTPD"
+  },
+  {
+    "company": "INEOS",
+    "address": "375 Hallnor Road",
+    "city": "Porcupine Timmins",
+    "state": "Ontario",
+    "country": "Canada",
+    "coordinates": "48\u00b0 30' 31\" N, 81\u00b0 8' 30\" W",
+    "latitude": 48.50861111111111,
+    "longitude": -81.14166666666668,
+    "plantType": "Liquid So2",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "40,000 TPA"
+  },
+  {
+    "company": "Glencore - Smelter Acid Plant",
+    "address": "PO Bag 2002 #10050 Highway 101 East",
+    "city": "Timmins",
+    "state": "Ontario",
+    "country": "Canada",
+    "coordinates": "48\u00ba 33' 7\" N, 81\u00ba 4' 52\" W",
+    "latitude": 48.551944444444445,
+    "longitude": -81.08111111111111,
+    "plantType": "Metallurgical",
+    "gasSource": "Copper",
+    "capacity": "1692 MTPD"
+  },
+  {
+    "company": "Glencore - Horne Smelter",
+    "address": "Not available",
+    "city": "Rouyn-Noranda ",
+    "state": "Quebec",
+    "country": "Canada",
+    "coordinates": "48\u00ba 15' 6\" N, 79\u00ba 1' 10\" W",
+    "latitude": 48.251666666666665,
+    "longitude": -79.01944444444445,
+    "plantType": "Metallurgical",
+    "gasSource": "Copper, Electronic Scrap",
+    "capacity": "2050 MTPD"
+  },
+  {
+    "company": "Glencore - Brunswick Smelter",
+    "address": "Not available",
+    "city": "Belledune",
+    "state": "New Brunswick",
+    "country": "Canada",
+    "coordinates": "47\u00ba 53' 56\" N, 65\u00ba 50' 6\" W",
+    "latitude": 47.89888888888889,
+    "longitude": -65.835,
+    "plantType": "Metallurgical",
+    "gasSource": "Lead Sinter Machine",
+    "capacity": "540 MTPD"
+  },
+  {
+    "company": "Vale  ",
+    "address": "337 Power Street",
+    "city": "Copper Cliff",
+    "state": "Ontario",
+    "country": "Canada",
+    "coordinates": "46\u00ba 28' 36\" N, 81\u00ba 3' 8\" W",
+    "latitude": 46.47666666666667,
+    "longitude": -81.05222222222221,
+    "plantType": "Metallurgical",
+    "gasSource": "Nickel and Copper",
+    "capacity": "3200 MTPD"
+  },
+  {
+    "company": "Glencore - Falconbridge",
+    "address": "Longyear Drive",
+    "city": "Falconbridge",
+    "state": "Ontario",
+    "country": "Canada",
+    "coordinates": "46\u00ba 34' 43\" N, 80\u00ba 48' 7\" W",
+    "latitude": 46.578611111111115,
+    "longitude": -80.80194444444444,
+    "plantType": "Metallurgical",
+    "gasSource": "Nickel Roaster",
+    "capacity": "1168 MTPD "
+  },
+  {
+    "company": "SaskPower ",
+    "address": "Boundary Dam Power Station",
+    "city": "Estevan",
+    "state": "Saskatchewan",
+    "country": "Canada",
+    "coordinates": "49\u00b0 5' 47\" N, 103\u00b0 2' 1\" W",
+    "latitude": 49.09638888888889,
+    "longitude": -103.03361111111111,
+    "plantType": "Metallurgical",
+    "gasSource": "So2 from Cansolv unit",
+    "capacity": "60 MTPD"
+  },
+  {
+    "company": "Glencore - Roaster Acid Plant",
+    "address": "PO Bag 2002 #10050 Highway 101 East",
+    "city": "Timmins",
+    "state": "Ontario",
+    "country": "Canada",
+    "coordinates": "48\u00ba 32' 53\" N, 81\u00ba 4' 59\" W",
+    "latitude": 48.54805555555556,
+    "longitude": -81.08305555555555,
+    "plantType": "Metallurgical",
+    "gasSource": "Zinc",
+    "capacity": "408 MTPD"
+  },
+  {
+    "company": "Glencore Canada - CEZinc - Plant 1",
+    "address": "860 Boulevard Cadieu",
+    "city": "Salaberry-de-Valleyfield",
+    "state": "Quebec",
+    "country": "Canada",
+    "coordinates": "45\u00ba 13' 38\" N, 74\u00ba 5' 45\" W",
+    "latitude": 45.227222222222224,
+    "longitude": -74.09583333333333,
+    "plantType": "Metallurgical",
+    "gasSource": "Zinc",
+    "capacity": "360 MTPD"
+  },
+  {
+    "company": "Glencore Canada - CEZinc - Plant 2",
+    "address": "860 Boulevard Cadieu",
+    "city": "Salaberry-de-Valleyfield",
+    "state": "Quebec",
+    "country": "Canada",
+    "coordinates": "45\u00ba 13' 37\" N, 74\u00ba 5' 43\" W",
+    "latitude": 45.22694444444445,
+    "longitude": -74.09527777777777,
+    "plantType": "Metallurgical",
+    "gasSource": "Zinc",
+    "capacity": "450 MTPD"
+  },
+  {
+    "company": "Glencore Canada - CEZinc - Plant 3",
+    "address": "860 Boulevard Cadieu",
+    "city": "Salaberry-de-Valleyfield",
+    "state": "Quebec",
+    "country": "Canada",
+    "coordinates": "45\u00ba 13' 37\" N, 74\u00ba 5' 42\" W",
+    "latitude": 45.22694444444445,
+    "longitude": -74.095,
+    "plantType": "Metallurgical",
+    "gasSource": "Zinc",
+    "capacity": "520 MTPD"
+  },
+  {
+    "company": "Teck Metals Limited - Plant 9",
+    "address": "PO Box 1000, 25 Aldridge Avenue",
+    "city": "Trail",
+    "state": "British Columbia",
+    "country": "Canada",
+    "coordinates": "49\u00ba 6' 5\" N, 117\u00ba 43' 13\" W",
+    "latitude": 49.10138888888889,
+    "longitude": -117.72027777777778,
+    "plantType": "Metallurgical",
+    "gasSource": "Zinc",
+    "capacity": "581 MTPD"
+  },
+  {
+    "company": "Nutrien - Plant No.1",
+    "address": "Bag 20",
+    "city": "Redwater ",
+    "state": "Alberta",
+    "country": "Canada",
+    "coordinates": "53\u00ba 50' 43\" N, 113\u00ba 5' 22\" W",
+    "latitude": 53.84527777777778,
+    "longitude": -113.08944444444444,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2200 MTPD"
+  },
+  {
+    "company": "Nutrien - Plant No.2",
+    "address": "Bag 20",
+    "city": "Redwater ",
+    "state": "Alberta",
+    "country": "Canada",
+    "coordinates": "53\u00ba 50' 39\" N, 113\u00ba 5' 22\" W",
+    "latitude": 53.844166666666666,
+    "longitude": -113.08944444444444,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "1090 MTPD"
+  },
+  {
+    "company": "Orano Canada Inc - Plant 1",
+    "address": "Not available",
+    "city": "Pinehouse",
+    "state": "Not available",
+    "country": "Canada",
+    "coordinates": "57\u00b0 12' 46\" N, 105\u00b0 40' 17\" W",
+    "latitude": 57.21277777777778,
+    "longitude": -105.6713888888889,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "200 MTPD"
+  },
+  {
+    "company": "Orano Canada Inc - Plant 2",
+    "address": "Not available",
+    "city": "Pinehouse",
+    "state": "Not available",
+    "country": "Canada",
+    "coordinates": "57\u00b0 12' 46\" N, 105\u00b0 40' 17\" W",
+    "latitude": 57.21277777777778,
+    "longitude": -105.6713888888889,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "300 MTPD"
+  },
+  {
+    "company": "Border Chemical Co",
+    "address": "595 Gunn Road",
+    "city": "Winnipeg",
+    "state": "Manitoba",
+    "country": "Canada",
+    "coordinates": "49\u00b0 55' 2\" N, 96\u00b0 59' 53\" W",
+    "latitude": 49.91722222222222,
+    "longitude": -96.99805555555555,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "360 MTPD"
+  },
+  {
+    "company": "Cameco",
+    "address": "Not available",
+    "city": "Rabbit Lake",
+    "state": "Not available",
+    "country": "Canada",
+    "coordinates": "43\u00b056'36\"N 78\u00b017'43\"W",
+    "latitude": 43.94333333333333,
+    "longitude": -78.29527777777777,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "CCC Group",
+    "address": "60 First Street East",
+    "city": "Elmira",
+    "state": "Ontario",
+    "country": "Canada",
+    "coordinates": "43\u00ba 35' 30\" N, 80\u00ba 33' 6\" W",
+    "latitude": 43.59166666666667,
+    "longitude": -80.55166666666666,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "140 MTPD"
+  },
+  {
+    "company": "Chemtrade",
+    "address": "3025 Industrial Way",
+    "city": "Prince George",
+    "state": "British Columbia",
+    "country": "Canada",
+    "coordinates": "53\u00ba 50' 39\" N, 122\u00ba 44' 0\" W",
+    "latitude": 53.844166666666666,
+    "longitude": -122.73333333333333,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "145 MTPD"
+  },
+  {
+    "company": "Sherrit Gordon Mines",
+    "address": "Not available",
+    "city": "Fort Saskatchewan",
+    "state": "Alberta",
+    "country": "Canada",
+    "coordinates": "53\u00b0 43' 12\" N, 113\u00b0 11' 8\" W\u00a0",
+    "latitude": 53.72,
+    "longitude": -113.18555555555555,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "570 MTPD"
+  },
+  {
+    "company": "Minera Mexico SA de CV - Mexicana de Cobre - Plant No.1 ",
+    "address": "Not available",
+    "city": "La Caridad",
+    "state": "Sonora",
+    "country": "Mexico",
+    "coordinates": "30\u00ba 29' 32\" N, 109\u00ba 38' 2\" W",
+    "latitude": 30.492222222222225,
+    "longitude": -109.63388888888889,
+    "plantType": "Metallurgical",
+    "gasSource": "Copper",
+    "capacity": "2614 MTPD"
+  },
+  {
+    "company": "Minera Mexico SA de CV - Mexicana de Cobre - Plant No.2",
+    "address": "Not available",
+    "city": "La Caridad",
+    "state": "Sonora",
+    "country": "Mexico",
+    "coordinates": "30\u00ba 29' 35\" N, 109\u00ba 38' 5\" W",
+    "latitude": 30.493055555555557,
+    "longitude": -109.63472222222222,
+    "plantType": "Metallurgical",
+    "gasSource": "Copper",
+    "capacity": "2300 MTPD"
+  },
+  {
+    "company": "Molymex SA de CV",
+    "address": "Not available",
+    "city": "Cumpas",
+    "state": "Sonora",
+    "country": "Mexico",
+    "coordinates": "30\u00b0 0' 40.5\" N, 109\u00b0 46' 57.5\" W",
+    "latitude": 30.01125,
+    "longitude": -109.78263888888888,
+    "plantType": "Metallurgical",
+    "gasSource": "Molybdenum",
+    "capacity": "65 MTPD"
+  },
+  {
+    "company": "Industrial Minera Mexico SA de CV",
+    "address": "Cempol Eliseos 400 Col Lomas de Chapultepec",
+    "city": "Not available",
+    "state": "Mexico DF",
+    "country": "Mexico",
+    "coordinates": "22\u00b0 10' 13\" N, 101\u00b0 2' 10\" W",
+    "latitude": 22.17027777777778,
+    "longitude": -101.03611111111111,
+    "plantType": "Metallurgical",
+    "gasSource": "Zinc",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Met-Mex Penoles SA de CV - Plant No.2",
+    "address": "Not available",
+    "city": "Torreon",
+    "state": "Coahuila",
+    "country": "Mexico",
+    "coordinates": "25\u00ba 31' 48\" N, 103\u00ba 26' 33\" W",
+    "latitude": 25.529999999999998,
+    "longitude": -103.44250000000001,
+    "plantType": "Metallurgical",
+    "gasSource": "Zinc",
+    "capacity": "600 MTPD"
+  },
+  {
+    "company": "Met-Mex Penoles SA de CV - Plant No.3",
+    "address": "Not available",
+    "city": "Torreon",
+    "state": "Coahuila",
+    "country": "Mexico",
+    "coordinates": "25\u00ba 31' 44\" N, 103\u00ba 26' 31\" W",
+    "latitude": 25.528888888888886,
+    "longitude": -103.44194444444445,
+    "plantType": "Metallurgical",
+    "gasSource": "Zinc",
+    "capacity": "1162 MTPD"
+  },
+  {
+    "company": "Agrogen",
+    "address": "Road to Tlacote El Bajo",
+    "city": "Qro. CP",
+    "state": "Not available",
+    "country": "Mexico",
+    "coordinates": "20\u00b0 35' 41\" N, 100\u00b0 28' 14\" W",
+    "latitude": 20.59472222222222,
+    "longitude": -100.47055555555556,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Fefermex SA de CV - Plant 1",
+    "address": "Not available",
+    "city": "Cosoleacaque",
+    "state": "Veracruz",
+    "country": "Mexico",
+    "coordinates": "18\u00b006'05\"N 94\u00b034'26\"W",
+    "latitude": 18.10138888888889,
+    "longitude": -94.57388888888889,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "108,000 STPA"
+  },
+  {
+    "company": "Fefermex SA de CV - Plant 2",
+    "address": "Not available",
+    "city": "Cosoleacaque",
+    "state": "Veracruz",
+    "country": "Mexico",
+    "coordinates": "18\u00b006'05\"N 94\u00b034'26\"W",
+    "latitude": 18.10138888888889,
+    "longitude": -94.57388888888889,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "218,000 STPA"
+  },
+  {
+    "company": "Fertilizantes de Minatitlan de CV",
+    "address": "Not available",
+    "city": "Minatitlan ",
+    "state": "Veracruz",
+    "country": "Mexico",
+    "coordinates": "18\u00b0 0' 8\" N, 94\u00b0 34' 9\" W",
+    "latitude": 18.002222222222223,
+    "longitude": -94.56916666666666,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Grupo Fertinal SA de CV - Plant I",
+    "address": "Blvd Adolfo Lopez Mateos No. 2836",
+    "city": "Lazaro ",
+    "state": "Carden",
+    "country": "Mexico",
+    "coordinates": "17\u00b0 55' 17\" N, 102\u00b0 10' 51\" W",
+    "latitude": 17.92138888888889,
+    "longitude": -102.18083333333334,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "660,000 MTPA"
+  },
+  {
+    "company": "Grupo Fertinal SA de CV - Plant II",
+    "address": "Blvd Adolfo Lopez Mateos No. 2836",
+    "city": "Lazaro ",
+    "state": "Carden",
+    "country": "Mexico",
+    "coordinates": "17\u00b0 55' 20\" N, 102\u00b0 10' 52\" W",
+    "latitude": 17.922222222222224,
+    "longitude": -102.18111111111112,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "660,000 MTPA"
+  },
+  {
+    "company": "Orbia Advance Corp SAB de CV",
+    "address": "Km 4.5 Carretera Matamors a Reynosa",
+    "city": "Ejido las Rusias Matamoros ",
+    "state": "Tamaulipas",
+    "country": "Mexico",
+    "coordinates": "25\u00b0 54' 19\" N, 97\u00b0 33' 15\" W",
+    "latitude": 25.905277777777776,
+    "longitude": -97.55416666666666,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "Not specified"
+  },
+  {
+    "company": "Minera y Metalurgica del Boleo SA",
+    "address": "Carretera Transpeninsular No.1 Km 5.5 al Norte de Santa Rosalia",
+    "city": "Santa Rosalia",
+    "state": "Baja California Sur",
+    "country": "Mexico",
+    "coordinates": "27\u00b0 22' 5\" N, 112\u00b0 17' 50\" W",
+    "latitude": 27.368055555555557,
+    "longitude": -112.29722222222222,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "2400 MTPD"
+  },
+  {
+    "company": "Minera y Metalurgica del Boleo SA",
+    "address": "Carretera Transpeninsular No.1 Km 5.5 al Norte de Santa Rosalia",
+    "city": "Santa Rosalia",
+    "state": "Baja California Sur",
+    "country": "Mexico",
+    "coordinates": "27\u00b0 22' 5\" N, 112\u00b0 17' 50\" W",
+    "latitude": 27.368055555555557,
+    "longitude": -112.29722222222222,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "300 MTPD"
+  },
+  {
+    "company": "Univex SA - Plant 1 ",
+    "address": "Carretera Panamericana Km 306 Tramo Salamanca - Celaya",
+    "city": "Salamanca",
+    "state": "Guanajuato",
+    "country": "Mexico",
+    "coordinates": "20\u00b0 32' 17.5\" N, 101\u00b0 6' 1.5\" W",
+    "latitude": 20.538194444444446,
+    "longitude": -101.10041666666666,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "160 MTPD"
+  },
+  {
+    "company": "Univex SA - Plant 2",
+    "address": "Carretera Panamericana Km 306 Tramo Salamanca - Celaya",
+    "city": "Salamanca",
+    "state": "Guanajuato",
+    "country": "Mexico",
+    "coordinates": "20\u00b0 32' 17.5\" N, 101\u00b0 6' 0\" W",
+    "latitude": 20.538194444444446,
+    "longitude": -101.1,
+    "plantType": "Sulfur Burner",
+    "gasSource": "Elemental Sulfur",
+    "capacity": "160 MTPD"
+  }
+];
+        
+        // Initialize the map when the page is fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the map centered on North America
+            const map = L.map('map').setView([40, -100], 4);
+            
+            // Add the base tile layer (OpenStreetMap)
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19
+            }).addTo(map);
+            
+            // Create a marker cluster group
+            const markers = L.markerClusterGroup();
+            
+            // Define marker icons for different plant types
+            const icons = {
+                'sulfur': L.divIcon({
+                    html: '<i class="fas fa-industry" style="color: #3388ff;"></i>',
+                    className: 'custom-div-icon',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                }),
+                'metallurgical': L.divIcon({
+                    html: '<i class="fas fa-industry" style="color: #dc3545;"></i>',
+                    className: 'custom-div-icon',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                }),
+                'regeneration': L.divIcon({
+                    html: '<i class="fas fa-industry" style="color: #28a745;"></i>',
+                    className: 'custom-div-icon',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                }),
+                'other': L.divIcon({
+                    html: '<i class="fas fa-industry" style="color: #6c757d;"></i>',
+                    className: 'custom-div-icon',
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15]
+                })
+            };
+            
+            // Create marker and add to the cluster group
+            function createMarker(producer) {
+                try {
+                    if (!producer.latitude || !producer.longitude || isNaN(producer.latitude) || isNaN(producer.longitude)) return null;
+                    
+                    const plantType = producer.plantType.toLowerCase();
+                    let iconType = 'other';
+                    
+                    if (plantType.includes('sulfur')) {
+                        iconType = 'sulfur';
+                    } else if (plantType.includes('metallurgical')) {
+                        iconType = 'metallurgical';
+                    } else if (plantType.includes('regeneration') || plantType.includes('regenerat')) {
+                        iconType = 'regeneration';
+                    }
+                    
+                    const popupContent = `
+                        <div style="min-width: 200px; max-width: 300px;">
+                            <h3>${producer.company}</h3>
+                            <p><b>Location:</b> ${producer.city}, ${producer.state}</p>
+                            <p><b>Country:</b> ${producer.country}</p>
+                            <p><b>Plant Type:</b> ${producer.plantType}</p>
+                            <p><b>Gas Source:</b> ${producer.gasSource}</p>
+                            <p><b>Capacity:</b> ${producer.capacity}</p>
+                        </div>
+                    `;
+                    
+                    const marker = L.marker([producer.latitude, producer.longitude], {
+                        icon: icons[iconType],
+                        alt: producer.company,
+                        plantType: iconType,
+                        country: producer.country.toLowerCase()
+                    }).bindPopup(popupContent);
+                    
+                    return marker;
+                } catch (e) {
+                    console.error("Error creating marker:", e, producer);
+                    return null;
+                }
+            }
+            
+            // Add all markers to the map
+            function addAllMarkers() {
+                try {
+                    // Clear existing markers
+                    markers.clearLayers();
+                    
+                    // Stats counters
+                    const stats = {
+                        types: {
+                            sulfur: 0,
+                            metallurgical: 0,
+                            regeneration: 0,
+                            other: 0
+                        },
+                        countries: {
+                            usa: 0,
+                            canada: 0,
+                            mexico: 0,
+                            other: 0
+                        }
+                    };
+                    
+                    // Filter the data based on selections
+                    const filteredData = producerData.filter(producer => {
+                        try {
+                            // Check if we have valid coordinates
+                            if (!producer.latitude || !producer.longitude || isNaN(producer.latitude) || isNaN(producer.longitude)) return false;
+                            
+                            // Check plant type filters
+                            const plantType = (producer.plantType || "").toLowerCase();
+                            let typeMatch = false;
+                            let typeCategory = 'other';
+                            
+                            if (plantType.includes('sulfur')) {
+                                typeMatch = document.getElementById('filter-sulfur').checked;
+                                typeCategory = 'sulfur';
+                            } else if (plantType.includes('metallurgical')) {
+                                typeMatch = document.getElementById('filter-metallurgical').checked;
+                                typeCategory = 'metallurgical';
+                            } else if (plantType.includes('regeneration') || plantType.includes('regenerat')) {
+                                typeMatch = document.getElementById('filter-regeneration').checked;
+                                typeCategory = 'regeneration';
+                            } else {
+                                typeMatch = document.getElementById('filter-other').checked;
+                            }
+                            
+                            // Check country filters
+                            const country = (producer.country || "").toLowerCase();
+                            let countryMatch = false;
+                            let countryCategory = 'other';
+                            
+                            if (country.includes('usa') || country.includes('united states')) {
+                                countryMatch = document.getElementById('country-usa').checked;
+                                countryCategory = 'usa';
+                            } else if (country.includes('canada')) {
+                                countryMatch = document.getElementById('country-canada').checked;
+                                countryCategory = 'canada';
+                            } else if (country.includes('mexico')) {
+                                countryMatch = document.getElementById('country-mexico').checked;
+                                countryCategory = 'mexico';
+                            } else {
+                                countryMatch = true; // Keep other countries visible by default
+                            }
+                            
+                            // Check search filter
+                            const searchText = document.getElementById('search-input').value.toLowerCase();
+                            const searchMatch = searchText === '' || 
+                                            (producer.company || "").toLowerCase().includes(searchText) ||
+                                            (producer.city || "").toLowerCase().includes(searchText) ||
+                                            (producer.state || "").toLowerCase().includes(searchText) ||
+                                            (producer.country || "").toLowerCase().includes(searchText);
+                            
+                            // Update statistics if item passes all filters
+                            if (typeMatch && countryMatch && searchMatch) {
+                                stats.types[typeCategory]++;
+                                stats.countries[countryCategory]++;
+                            }
+                            
+                            return typeMatch && countryMatch && searchMatch;
+                        } catch (e) {
+                            console.error("Error filtering producer:", e, producer);
+                            return false;
+                        }
+                    });
+                    
+                    console.log(`Adding ${filteredData.length} markers to the map`);
+                    
+                    // Create and add markers for filtered data
+                    filteredData.forEach(producer => {
+                        const marker = createMarker(producer);
+                        if (marker) markers.addLayer(marker);
+                    });
+                    
+                    map.addLayer(markers);
+                    
+                    // Update the statistics display
+                    updateStats(stats);
+                    
+                    // Update the plant list
+                    updatePlantList(filteredData);
+                } catch (e) {
+                    console.error("Error in addAllMarkers:", e);
+                }
+            }
+            
+            // Update statistics displays
+            function updateStats(stats) {
+                document.getElementById('plant-type-stats').innerHTML = `
+                    <div>Sulfur Burner: ${stats.types.sulfur}</div>
+                    <div>Metallurgical: ${stats.types.metallurgical}</div>
+                    <div>Acid Regeneration: ${stats.types.regeneration}</div>
+                    <div>Other: ${stats.types.other}</div>
+                    <div><b>Total: ${stats.types.sulfur + stats.types.metallurgical + stats.types.regeneration + stats.types.other}</b></div>
+                `;
+                
+                document.getElementById('country-stats').innerHTML = `
+                    <div>USA: ${stats.countries.usa}</div>
+                    <div>Canada: ${stats.countries.canada}</div>
+                    <div>Mexico: ${stats.countries.mexico}</div>
+                    <div>Other: ${stats.countries.other}</div>
+                `;
+            }
+            
+            // Update the plant list in sidebar
+            function updatePlantList(filteredData) {
+                const plantList = document.getElementById('plant-list');
+                plantList.innerHTML = '';
+                
+                filteredData.forEach(producer => {
+                    const item = document.createElement('div');
+                    item.className = 'plant-item';
+                    item.innerHTML = `<b>${producer.company}</b><br>${producer.city}, ${producer.state}`;
+                    
+                    item.addEventListener('click', () => {
+                        if (producer.latitude && producer.longitude) {
+                            map.setView([producer.latitude, producer.longitude], 10);
+                            
+                            // Find and open the marker's popup
+                            markers.eachLayer(marker => {
+                                const latlng = marker.getLatLng();
+                                if (latlng.lat === producer.latitude && latlng.lng === producer.longitude) {
+                                    marker.openPopup();
+                                }
+                            });
+                        }
+                    });
+                    
+                    plantList.appendChild(item);
+                });
+            }
+            
+            // Add legend to the map
+            const legend = L.control({ position: 'bottomright' });
+            legend.onAdd = function (map) {
+                const div = L.DomUtil.create('div', 'legend');
+                div.innerHTML = `
+                    <h4>Plant Types</h4>
+                    <div class="legend-item"><span class="marker-icon marker-sulfur"></span> Sulfur Burner</div>
+                    <div class="legend-item"><span class="marker-icon marker-metallurgical"></span> Metallurgical</div>
+                    <div class="legend-item"><span class="marker-icon marker-regeneration"></span> Acid Regeneration</div>
+                    <div class="legend-item"><span class="marker-icon marker-other"></span> Other</div>
+                `;
+                return div;
+            };
+            legend.addTo(map);
+            
+            // Add event listeners for filters
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.addEventListener('change', addAllMarkers);
+            });
+            
+            document.getElementById('search-input').addEventListener('input', addAllMarkers);
+            
+            // Initialize with all markers
+            addAllMarkers();
+        });
+    </script>
+</body>
+</html>
+    

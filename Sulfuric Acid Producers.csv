@@ -1,0 +1,148 @@
+﻿Owner,Address,City,State,ZIPCODE,Country,Coordinates,Type of Plant,Gas Source,Plant Capacity,SA/DA,Emissions,Year Built
+AdvanSix,905 East Randolph Road ,Hopewell,Virginia,23860,USA,"37° 18' 3"" N, 77° 16' 14"" W",Sulfur Burner,Elemental Sulfur,,,,
+PCI,2001 Jackson Street,Pasadena ,Texas,77003,USA,"29º 44' 33"" N, 95º 11' 30"" W",Sulfur Burner,Elemental Sulfur,1650 MTPD,SA,,1971
+American Smelting and Refining Company - ASARCO,Ray Complex Hayden SmelterP.O. Box 8 640 Asarco Avenue,Hayden,Arizona,85235,USA,"33º 0' 8"" N, 110º 46' 22"" W",Metallurgical,Copper Inco Flash Furnace ,2820 MTPD,DA,,1984
+"BASF 
+	Corporation Agricultural Products",3150 Highway JJ,Palmyra,Missouri,63461,USA,"39° 50' 3"" N, 91° 25' 56"" W",Acid Regeneration,H2S Gas,260 STPD,,,1989
+Mosaic (No.5 Plant),2501 Bonnie Mine Road,Bartow,Florida,33831,USA,"27° 51' 38"" N, 81° 55' 57"" W",Sulfur Burner,Elemental Sulfur,1002 MTPD,,,
+Mosaic (No.6 Plant),2501 Bonnie Mine Road,Bartow,Florida,33831,USA,"27° 51' 38"" N, 81° 56' 0"" W",Sulfur Burner,Elemental Sulfur,1306 MTPD,,,
+Chemtrade,1400 Olin Rd,Beaumont,Texas,77705-5754,USA,"30° 2' 44"" N, 94° 4' 10"" W",Acid Regeneration,Alkylation Spend Acid,825 MTPD,SA,,1983
+Chemtrade,7680 Ottawa Road,Cairo,Ohio,,USA,"40°50'55""N 84°04'51""W",Sulfur Burner,Elemental Sulfur,227 MTPD,,,1960
+Chemtrade Plant A & B,,Oregon,Ohio,,USA,"41°40'54""N 83°27'26""W",Acid Regeneration,Alkylation Spend Acid,,DA,,
+Chemtrade Plant 1 (Formerly Koch),140 Goes In Lodge Road,Riverton ,Wyoming,82501-9100,USA,"42° 59' 52"" N, 108° 24' 58"" W",Sulfur Burner,Elemental Sulfur,,,,
+Chemtrade Plant 2 (Formerly Koch),140 Goes In Lodge Road,Riverton ,Wyoming,82501-9100,USA,"42° 59' 53.5"" N, 108° 24' 58"" W",Acid Regeneration,Alkylation Spend Acid,,,,
+Chemtrade,10889 LA-1 (South),Shreveport,Louisiana,71115,USA,"32° 21' 36"" N, 93° 37' 57"" W",Acid Regeneration / Sulfur Burner,Alkylation Spend Acid / Elemental Sulfur,590 STPD,SA,,1979
+Chemtrade,5201 W 21st Street  ,Tulsa ,Oklahoma,,USA,"36° 8' 9"" N, 96° 3' 6"" W",Sulfur Burner,Elemental Sulfur,,SA,,
+Island Energy Services (Formerly Chevron,,Kapolei,Hawaii,,USA,"21° 18' 27"" N, 158° 6' 51"" W",Acid Regeneration,Alkylation Spent Acid,90 MTPD,SA,,1960
+Conoco Phillips,2200 Old Spanish Trail,Westlake,Louisiana,,USA,"30°14'39""N 93°16'18""W",Acid Regeneration,Alkylation Spent Acid,84225 STPA,,,
+Conoco Phillips,1660 West Anaheim Street,Wilmington,California,,USA,"33° 46' 36"" N, 118° 17’ 0"" W",Acid Regeneration,Alkylation Spent Acid,,,,
+Cornerstone Chemical ,10800 River Road,Westwego ,Louisiana,70094,USA,"29º 57' 44"" N, 90º 16' 21"" W",Acid Regeneration,Spent MMA Acid,960 MTPD,DA,,1978
+Doe Run,881 Main Street,Herculaneum,Missouri,63048,USA,"38º 15' 37"" N, 90º 22' 37"" W",Metallurgical,Lead Sinter Machine,180 MTPD,4 SA,,1968
+Chemours,12501 Strang Road,La Porte,Texas,,USA,"29° 41' 57"" N, 95° 2' 8"" W",Acid Regeneration,Alkylation Spend Acid / Elemental Sulfur,940 MTPD,DA,,
+Southern States Chemical,1 Kerr-McGee Road ,Savannah ,Georgia,31401,USA,"32° 4' 59"" N,  81° 1' 36"" W",Sulfur Burner,Elemental Sulfur,350400 MTPA,DA,,1975
+El Dorado Chemical,4500 North West Avenue,El Dorado,Arkansas,71730,USA,"33° 15' 59"" N, 92° 41' 24"" W",Sulfur Burner,Elemental Sulfur,360 STPD,SA,,1949
+Flint Hills Resources ,13115 Courthouse Boulevard,Rosemount,Minnesota,55068,USA,"44° 45' 56"" N, 93° 2' 26"" W ",Acid Regeneration / Sulfur Burner,Spent Sulfuric Acid / Elemental Sulfur,440 STPD,,,
+Freeport McMoran,PO BOX 220 2598 Highway 61 South ,Fort Madison,Iowa,52627,USA,"40º 35' 7"" N, 91º 25' 22"" W",Metallurgical,MO- Roaster / Sulfur Burner - Elemental Sulfur,390 MTPD,2/2 DA,,1977
+Freeport McMoran,,Miami,Arizona,,USA,"33º 24' 52"" N, 110º 51' 30"" W",Metallurgical,Copper IsaSmelt technology,,3/1 DA,,1972
+Freeport McMoran,Dos Pobres Copper Mine Graham County,Safford,Arizona,,USA,"32° 55' 49"" N, 109° 42' 14"" W",Sulfur Burner,Elemental Sulfur,1550 MTPD,3/1 DA,,2011
+General Chemical No.1 Acid Plant,8579 North Texas Road ,Anacortes,Washington,98221,USA,"48°28'47""N 122°33'28""W",Acid Regeneration,Alkylation Spent Acid,,,,1957
+General Chemical No.2 Acid Plant,8579 North Texas Road ,Anacortes,Washington,98221,USA,"  48° 28' 46.5"" N, 122° 33' 29"" W",Acid Regeneration,Alkylation Spent Acid,556 STPD,,,1964
+General Chemical No.3 Acid Plant,8579 North Texas Road ,Anacortes,Washington,98221,USA," 48°28'49""N 122°33'29""W",Acid Regeneration,Alkylation Spent Acid,,,,1975
+General Chemical ,525 Castro Street,Richmond,California,94801,USA," 37° 56' 23"" N, 122° 22' 41"" W",Acid Regeneration,Alkylation Spent Acid / Elemental Sulfur,"219,000 MTPA",,,
+Horsehead Corporation,300 Frankfort Road,Monaca,Pennsylvania,15061,USA,"40°39'59""N 80°20'12""W",Metallurgical,Zinc,,,,
+Innophos,10810 Highway 75 ,Geismer ,Louisiana,70734-3405,USA,"30°13'05""N 91°03'09""W",Sulfur Burner,Elemental Sulfur,,,,
+Ioneer,,Esmeralda County,Nevada,,USA,"37°51'15""N 117°51'46""W",Sulfur Burner,Elemental Sulfur,3500 MTPD,DA,,
+Itafos (East Plant),3010 Conda Road ,Soda Springs,Idaho,83403,USA,"42° 44' 21"" N, 111° 32' 25"" W",Sulfur Burner,Elemental Sulfur,1500 STPD,DA,,
+JR Simplot (300 Plant),1150 West Highway 30 W,Pocatello,Idaho,83201,USA,"42°54'28""N 112°31'29""W",Sulfur Burner,Elemental Sulfur,1750 STPD,,,
+JR Simplot (400 Plant),1150 West Highway 30 W,Pocatello,Idaho,83201,USA,"42°54'28""N 112°31'29""W",Sulfur Burner,Elemental Sulfur,,DA,,
+JR Simplot (Lurgi Plant),515 South Highway 430,Rock Springs,Wyoming,82902,USA,"41° 32' 29"" N, 109° 7' 55"" W",Sulfur Burner,Elemental Sulfur,1905 MTPD,DA,,1986
+JR Simplot (Monsanto Plant),515 South Highway 430,Rock Springs,Wyoming,82902,USA,"41° 32' 25"" N, 109° 7' 58"" W",Sulfur Burner,Elemental Sulfur,1197 MTPD,DA,,1995
+Rio Tinto Kennecott Utah Copper Corp,Smelter & Refinery 12000 West 2100 South ,Magna,Utah,84044,USA,"40º 43' 24"" N, 112º 11' 46"" W",Metallurgical,Copper Outotec Flash Furnace,3500 MTPD,3/1 DA,,1995
+Langeloth Mettalurgical Company,10 Langeloth Plant Drive Box 608,Langeloth,Pennsylvania,15054,USA,"40°21'50""N 80°24'03""W",Metallurgical,Molybdenum,240 STPD,3/1 DA,,1977
+Lucite International,2665 Fite Road,Memphis,Tennessee,38127,USA,"35° 16' 8"" N, 89° 58' 37"" W",Acid Regeneration,Spent Acid from MMA,680 MTPD,DA - Retrofit 2006,,1972
+Lucite International,6350 North Twin City Highway,Nederland ,Texas,38127,USA,"30° 0' 43"" N, 94° 1' 29"" W",Acid Regeneration,Spent Acid from MMA,625 MTPD,,,1961
+Martin Operating Parternship,669 County Road,Plainview ,Texas,79027,USA,"34° 13' 26"" N, 101° 45' 18"" W",Sulfur Burner,Elemental Sulfur,500 STPD,DA,,2007
+Mississippi Phosphate Corp (Plant No.2),"PO BOX 848, 601 Industrial Road (Highway 611)",Pascagoula,Mississippi,39568,USA,"30° 21' 6"" N, 88° 30' 1"" W",Sulfur Burner,Elemental Sulfur,1588 MTPD,2/2 DA,,1972
+Mississippi Phosphate Corp (Plant No.3),"PO BOX 848, 601 Industrial Road (Highway 611)",Pascagoula,Mississippi,39568,USA,"30° 21' 5"" N, 88° 30' 3"" W",Sulfur Burner,Elemental Sulfur,1588 MTPF,2/2 DA,,1974
+Mosaic Company (No.4 Plant),3200 Highway 60 West,Bartow,Florida,,USA,"27° 54' 28"" N, 81° 55' 5"" W",Sulfur Burner,Elemental Sulfur,2600 STPD,DA,,
+Mosaic Company (No.5 Plant),3200 Highway 60 West,Bartow,Florida,,USA,"27° 54' 30"" N, 81° 55' 4"" W",Sulfur Burner,Elemental Sulfur,2600 STPD,DA,,
+Mosaic Company (No.6 Plant),3200 Highway 60 West,Bartow,Florida,,USA,"27° 54' 25"" N, 81° 55' 3"" W",Sulfur Burner,Elemental Sulfur,2600 STPD,DA,,
+Mosaic Company (Plant 1),9959 Highway 18 St James,St James Parish,Louisiana,70086,USA,"30º 5' 15"" N, 90º 55' 16"" W",Sulfur Burner,Elemental Sulfur,1800 MTPD,,,1975
+Mosaic Company (Plant 2),9959 Highway 18 St James,St James Parish,Louisiana,70086,USA,"30º 5' 14"" N, 90º 55' 15"" W",Sulfur Burner,Elemental Sulfur,1800 MTPD,,,1975
+Mosaic Company (No.4 Plant),4390 C.R. 640 West,Bartow,Florida,33830,USA,"27° 50' 26"" N 81° 54' 41"" W",Sulfur Burner,Elemental Sulfur,2100 STPD,3/1 DA,,
+Mosaic Company (No.5 Plant),4390 C.R. 640 West,Bartow,Florida,33830,USA,"27° 50' 26"" N 81° 54' 34"" W",Sulfur Burner,Elemental Sulfur,2800 STPD,3/1 DA,,
+Mosaic Company (No.6 Plant),4390 C.R. 640 West,Bartow,Florida,33830,USA,"27° 50' 23"" N 81° 54' 30"" W",Sulfur Burner,Elemental Sulfur,2750 STPD,3/1 DA,,
+Mosaic New Wales Plant No.1,3095 Highway 640,Mulberry,Florida,,USA,"27°49'53""N 82°03'04""W",Sulfur Burner,Elemental Sulfur,3400 STPD,DA,,
+Mosaic New Wales Plant No.2,3095 Highway 640,Mulberry,Florida,,USA,"27°49'53""N 82°03'02""W",Sulfur Burner,Elemental Sulfur,3400 STPD,DA,,
+Mosaic New Wales Plant No.3,3095 Highway 640,Mulberry,Florida,,USA,"27°49'53""N 82°02'59""W",Sulfur Burner,Elemental Sulfur,3400 STPD,DA,,
+Mosaic New Wales Plant No.4,3095 Highway 640,Mulberry,Florida,,USA,"27° 49' 50"" N 82° 3' 6"" W",Sulfur Burner,Elemental Sulfur,2900 STPD,DA,,
+Mosaic New Wales Plant No.5,3095 Highway 640,Mulberry,Florida,,USA,"27°49'49""N 82°03'03""W",Sulfur Burner,Elemental Sulfur,2900 STPD,DA,,
+Mosaic - Riverview  - Plant 7,8813 US-41 South,Riverview,Florida,33569,USA,"27º 51' 39"" N, 82º 23' 23"" W",Sulfur Burner,Elemental Sulfur,3200 STPD,3/1 DA,,1961
+Mosaic - Riverview  - Plant 8,8813 US-41 South,Riverview,Florida,33569,USA,"27º 51' 40"" N, 82º 23' 20"" W",Sulfur Burner,Elemental Sulfur,2700 STPD,3/1 DA,,1975
+Mosaic - Riverview  - Plant 9,8813 US-41 South,Riverview,Florida,33569,USA,"27º 51' 43"" N, 82º 23' 23"" W",Sulfur Burner,Elemental Sulfur,3400 STPD,3/1 DA,,
+Mosaic - South Pierce - No.10 Plant,7450 Highway 630,Mulberry,Florida,33860,USA,"27° 45' 53"" N, 81° 56' 18"" W",Sulfur Burner,Elemental Sulfur,3000 STPD,3/1 DA,,
+Mosaic - South Pierce  - No.11 Plant,7450 Highway 630,Mulberry,Florida,33860,USA,"27° 45' 53"" N, 81° 56' 16"" W",Sulfur Burner,Elemental Sulfur,3000 STPD,3/1 DA,,
+Mosaic - Uncle Sam - A Plant,7250 Highway 44,St James Parish,Louisiana,70792,USA,"30º 2' 20"" N, 90º 49' 45"" W",Sulfur Burner,Elemental Sulfur,1500 MTPD,SA,,1968
+Mosaic - Uncle Sam - D Plant,7250 Highway 44,St James Parish,Louisiana,70792,USA,"30º 2' 15"" N, 90º 49' 44"" W",Sulfur Burner,Elemental Sulfur,1500 MTPD,3/1 DA,,1974
+Mosaic - Uncle Sam - E Plant,7250 Highway 44,St James Parish,Louisiana,70792,USA,"30º 2' 14"" N, 90º 49' 47"" W",Sulfur Burner,Elemental Sulfur,2900 MTPD,3/1 DA,,1992
+Newmont Mining Corporation,,Carlin,Nevada,,USA,"40° 47' 8"" N, 116° 11' 0"" W",Metallurgical,Gold Roaster,,DA,,
+Nouryon Functional Chemicals,13440 Highway 43 North,Axis,Alabama,36505,USA,"30°58'07""N 88°01'16""W",Sulfur Burner,Elemental Sulfur,850 STPD,,,1957
+Nyrstar NV,PO Box 1104 1800 Zinc Plant Road,Clarksville,Tennessee,37041-1104,USA,"36º 31' 0"" N, 87º 24' 21"" W",Metallurgical,Zinc,456 MTPD,2/2 DA,,1978
+PCS Nitrogen,3115 Highway 30,Geismer ,Louisiana,70734,USA,"30° 13' 14"" N, 91° 3' 21"" W",Sulfur Burner,Elemental Sulfur,,,,1967
+PCS Phosphate - Plant 5,1530 NC HWY 306 South,Aurora,North Carolina,27806,USA,"35°22'25""N 76°46'45""W",Sulfur Burner,Elemental Sulfur,3600 STPD,3/1 DA,,
+PCS Phosphate - Plant 6,1530 NC HWY 306 South,Aurora,North Carolina,27806,USA,"35°22'25""N 76°46'45""W",Sulfur Burner,Elemental Sulfur,3800 STPD,3/1 DA,,
+PCS Phosphate - Plant 7,1530 NC HWY 306 South,Aurora,North Carolina,27806,USA,"35°22'25""N 76°46'45""W",Sulfur Burner,Elemental Sulfur,4500 STPD,3/1 DA,,2010
+PCS Phosphate - Suwannee River Complex - Plant C,"State Road 137, E of US 41, North of White Springs",Hamilton County,Florida,,USA,"30°26'52""N 82°51'53""W",Sulfur Burner,Elemental Sulfur,2300 STPD,3/1 DA,,
+PCS Phosphate - Suwannee River Complex - Plant D,"State Road 137, E of US 41, North of White Springs",Hamilton County,Florida,,USA,"30°26'53""N 82°51'53""W",Sulfur Burner,Elemental Sulfur,2300 STPD,3/1 DA,,
+PCS Phosphate - Suwannee River Complex - Plant E,"State Road 137, E of US 41, North of White Springs",Hamilton County,Florida,,USA,"30°26'56""N 82°51'55""W",Sulfur Burner,Elemental Sulfur,2500 STPD,3/1 DA,,
+PCS Phosphate - Suwannee River Complex - Plant F,"State Road 137, E of US 41, North of White Springs",Hamilton County,Florida,,USA,"30°26'57""N 82°51'53""W",Sulfur Burner,Elemental Sulfur,2500 STPD,3/1 DA,,
+PVS Chemical Solutions ,55 Lee Street,Buffalo,New York,14120,USA,"42° 51' 54.5"" N, 78° 50' 29"" W",Acid Regeneration / Sulfur Burner,Alkylation Spend Acid / Elemental Sulfur,330 STPD,SA,,1989
+PVS Chemical Solutions ,12260 South Carondolet Avenue,Chicago,Illinois,60633,USA,"41°40'19""N 87°33'05""W",Sulfur Burner,Elemental Sulfur,127750 STPA,,,
+Eco Services- Unit No. 1 ,1275 Airline Highway,Baton Rouge,Louisiana,70805,USA,"30° 30' 34"" N, 91° 11' 14"" W",Acid Regeneration,Alkylation Spent Acid,700 MTPD,,,1953
+Eco Services- Unit No. 2,1275 Airline Highway,Baton Rouge,Louisiana,70805,USA,"30° 30' 36"" N, 91° 11' 5"" W",Acid Regeneration / Sulfur Burner,Alkylation Spend Acid / Elemental Sulfur,1500 MTPD,,,1968
+Eco Services ,20720 South Wilmington Avenue,Carson,California,90810,USA,"33° 50' 36"" N, 118° 13' 59"" W",Acid Regeneration,Alkylation Waste Acid ,,3/1 DA,,1990
+Eco Services,3429 Park Street,Baytown,Texas,77520,USA,"29° 44' 52"" N, 95° 0' 8"" W",Acid Regeneration,Alkylation Waste Acid ,800 MTPD,,,
+Eco Services - Unit 4 ,2000 East Michigan Street,Hammond ,Indiana,46320,USA,"41°36'29""N 87°28'42""W",Acid Regeneration,Alkylation Waste Acid ,1400 STPD,DA,,
+Eco Services - No.2 Plant,8615 Manchester Boulevard,Houston,Texas,77012,USA,"29°43'07""N 95°16'11""W",Acid Regeneration,Alkylation Waste Acid ,1250 STPD,,,
+Eco Services - No.8 Plant,8615 Manchester Boulevard,Houston,Texas,77012,USA,"29°43'10""N 95°16'15""W",Acid Regeneration,Alkylation Waste Acid ,1690 STPD,,,
+Eco Services ,100 Mococo Road,Martinez ,California,94553,USA,"38º 2' 3"" N, 122º 6' 56"" W",Acid Regeneration / Sulfur Burner,Alkylation Spend Acid / Elemental Sulfur,1834 STPD,3/1 DA,,1971
+Rohm and Haas Texas - No.1 Acid Plant,1900 Tidal Road,Deer Park,Texas,77536,USA,"29°43'58""N 95°06'18""W",Acid Regeneration,Alkylation Waste Acid ,,,,
+Rohm and Haas Texas - No.2 Acid Plant,1900 Tidal Road,Deer Park,Texas,77536,USA,"29°44'01""N 95°06'17""W",Acid Regeneration,Alkylation Waste Acid ,,,,
+Rohm and Haas Texas - No.3 Acid Plant,1900 Tidal Road,Deer Park,Texas,77536,USA,"29°44'01""N 95°06'14""W",Acid Regeneration,Alkylation Waste Acid ,,,,
+Southern States Chemical,1580 Columbia Nitrogen Road,Augusta,Georgia,30901,USA,"33° 26' 0"" N, 81° 56' 10"" W",Sulfur Burner,Elemental Sulfur,850 STPD,3/1 DA,,
+Southern States Chemical - Plant No.1 ,1600 E President Street,Savannah ,Georgia,31404,USA,"32° 4' 23"" N, 81° 3' 47"" W",Sulfur Burner,Elemental Sulfur,135 STPD,SA,,1965
+Southern States Chemical - Plant No.2,1600 E President Street,Savannah ,Georgia,31404,USA,"32° 4' 23"" N, 81° 3' 45"" W",Sulfur Burner,Elemental Sulfur,225 STPD,SA,,1969
+Southern States Chemical - Plant No.1 ,2600 US -241 South,Wilmington,North Carolina,28401,USA,"34°16' 22"" N, 77° 57' 10"" W",Sulfur Burner,Elemental Sulfur,125 STPD,SA,,
+Southern States Chemical - Plant No.3,2600 US -241 South,Wilmington,North Carolina,28401,USA,"34°16'23""N 77°57'11""W",Sulfur Burner,Elemental Sulfur,106 STPD,SA,,
+Tampa Electric Company,,,,,USA,"27° 43' 43"" N, 81° 59' 24"" W",,Hydrogen Sulphide,180 MTPD,DA,,1996
+Tesoro Refining and Marketing,150 Solano Way,Martinez ,California,94553,USA,"38º 1' 29"" N, 122º 3' 25"" W",Acid Regeneration,Alkylation Waste Acid/Hydrogen Sulphide,435.4 MTPD,3/1 DA,,
+Valero,"6701 FM 119, HCR Box 36",Sunray,Texas,79086,USA,"35° 57' 10"" N, 101° 52' 37"" W",Acid Regeneration,Alkylation Waste Acid ,100 STPD,,,
+Veolia,1400 Park Avenue,Linden ,New Jersey,07036,USA,"40°38'22""N 74°13'12""W",Acid Regeneration,Alkylation Waste Acid ,,3/1 DA,,2007
+Veolia,3460 Highway 44,Darrow,Louisiana,70725,USA,"30º 7' 31"" N, 90º 54' 43"" W",Acid Regeneration,Alkylation Waste Acid ,1635 MTPD,DA,,1967
+Veolia,11215 Brower Road,North Bend ,Ohio,45052,USA,"39° 6' 56"" N, 84° 48' 42"" W",Sulfur Burner,Elemental Sulfur,300 STPD,SA,,
+Veolia,766 Governor Lea Road,Delaware City ,Delaware,19706,USA,"39° 35' 33"" N, 75° 38' 16"" W",Acid Regeneration,Alkylation Waste Acid/Hydrogen Sulphide,500 MTPD,3/1 DA,,2005
+Veolia,HC-66 400 Harris Road ,Wurtland,Kentucky,,USA,"38° 33' 20"" N, 82° 47' 21"" W",Sulfur Burner,Elemental Sulfur,"260,000 STPA",SA,,1961
+Veolia,1201 Bellwood Road,Richmond,Virginia,23237,USA,"37° 25' 1"" N, 77° 24' 32"" W",Sulfur Burner,Elemental Sulfur,300 STPD,,,1947
+Veolia,6500 Trowbridge Drive ,El Paso,Texas,79905,USA,"31° 45' 56"" N, 106° 23' 45"" W",Acid Regeneration,Alkylation Waste Acid/Hydrogen Sulphide,,3/1 DA,,2008
+Veolia,6500 Trowbridge Drive ,El Paso,Texas,79905,USA,"31° 45' 55"" N, 106° 23' 43"" W",Acid Regeneration,Alkylation Waste Acid/Hydrogen Sulphide,,3/1 DA,,2008
+Wisconsin Public Service Corporation,,Wausau,Wisconsin,,USA,"44° 51' 30"" N 89° 38' 58"" W",Metallurgical,Thermal Regeneration ,50 MTPD,SA,,2016
+Irving Oil Limited - Plant 1,,Saint John,New Brunswick,,Canada,"45° 16' 45"" N, 66° 0' 53"" W",Acid Regeneration,Alkylation Waste Acid/Hydrogen Sulphide,278 MTPD,SA,,
+Irving Oil Limited - Plant 2,,Saint John,New Brunswick,,Canada,"45° 16' 45"" N, 66° 0' 53"" W",Acid Regeneration,Claus Tail Gas,29.2 MTPD,SA,,
+INEOS,375 Hallnor Road,Porcupine Timmins,Ontario,,Canada,"48° 30' 31"" N, 81° 8' 30"" W",Liquid So2,Elemental Sulfur,"40,000 TPA",,,2017
+Glencore - Smelter Acid Plant,PO Bag 2002 #10050 Highway 101 East,Timmins,Ontario,P4N 7K1,Canada,"48º 33' 7"" N, 81º 4' 52"" W",Metallurgical,Copper,1692 MTPD,3/1 DA,,1981
+Glencore - Horne Smelter,,Rouyn-Noranda ,Quebec,,Canada,"48º 15' 6"" N, 79º 1' 10"" W",Metallurgical,"Copper, Electronic Scrap",2050 MTPD,3 SA,,1989
+Glencore - Brunswick Smelter,,Belledune,New Brunswick,E0B 1G0,Canada,"47º 53' 56"" N, 65º 50' 6"" W",Metallurgical,Lead Sinter Machine,540 MTPD,3 SA,,1966
+Vale  ,337 Power Street,Copper Cliff,Ontario,P0M 1N0,Canada,"46º 28' 36"" N, 81º 3' 8"" W",Metallurgical,Nickel and Copper,3200 MTPD,3/1 DA,,1991
+Glencore - Falconbridge,Longyear Drive,Falconbridge,Ontario,P0M 1S0,Canada,"46º 34' 43"" N, 80º 48' 7"" W",Metallurgical,Nickel Roaster,1168 MTPD ,4 SA,,1978
+SaskPower ,Boundary Dam Power Station,Estevan,Saskatchewan,,Canada,"49° 5' 47"" N, 103° 2' 1"" W",Metallurgical,So2 from Cansolv unit,60 MTPD,2 SA,,2013
+Glencore - Roaster Acid Plant,PO Bag 2002 #10050 Highway 101 East,Timmins,Ontario,P4N 7K1,Canada,"48º 32' 53"" N, 81º 4' 59"" W",Metallurgical,Zinc,408 MTPD,4 SA,,1972
+Glencore Canada - CEZinc - Plant 1,860 Boulevard Cadieu,Salaberry-de-Valleyfield,Quebec,J6S 4W2,Canada,"45º 13' 38"" N, 74º 5' 45"" W",Metallurgical,Zinc,360 MTPD,SA,,1963
+Glencore Canada - CEZinc - Plant 2,860 Boulevard Cadieu,Salaberry-de-Valleyfield,Quebec,J6S 4W2,Canada,"45º 13' 37"" N, 74º 5' 43"" W",Metallurgical,Zinc,450 MTPD,SA,,1973
+Glencore Canada - CEZinc - Plant 3,860 Boulevard Cadieu,Salaberry-de-Valleyfield,Quebec,J6S 4W2,Canada,"45º 13' 37"" N, 74º 5' 42"" W",Metallurgical,Zinc,520 MTPD,SA,,1981
+Teck Metals Limited - Plant 9,"PO Box 1000, 25 Aldridge Avenue",Trail,British Columbia,V1R 4L8,Canada,"49º 6' 5"" N, 117º 43' 13"" W",Metallurgical,Zinc,581 MTPD,3 SA,,1972
+Nutrien - Plant No.1,Bag 20,Redwater ,Alberta,T0A 2W0,Canada,"53º 50' 43"" N, 113º 5' 22"" W",Sulfur Burner,Elemental Sulfur,2200 MTPD,3/1 DA,,1975
+Nutrien - Plant No.2,Bag 20,Redwater ,Alberta,T0A 2W0,Canada,"53º 50' 39"" N, 113º 5' 22"" W",Sulfur Burner,Elemental Sulfur,1090 MTPD,3/1 DA,,1986
+Orano Canada Inc - Plant 1,,Pinehouse,,,Canada,"57° 12' 46"" N, 105° 40' 17"" W",Sulfur Burner,Elemental Sulfur,200 MTPD,,,
+Orano Canada Inc - Plant 2,,Pinehouse,,,Canada,"57° 12' 46"" N, 105° 40' 17"" W",Sulfur Burner,Elemental Sulfur,300 MTPD,DA,,2011
+Border Chemical Co,595 Gunn Road,Winnipeg,Manitoba,R2C 5G2,Canada,"49° 55' 2"" N, 96° 59' 53"" W",Sulfur Burner,Elemental Sulfur,360 MTPD,,,
+Cameco,,Rabbit Lake,,,Canada,"43°56'36""N 78°17'43""W",Sulfur Burner,Elemental Sulfur,,,,
+CCC Group,60 First Street East,Elmira,Ontario,N3B 2Z5,Canada,"43º 35' 30"" N, 80º 33' 6"" W",Sulfur Burner,Elemental Sulfur,140 MTPD,4 SA,,
+Chemtrade,3025 Industrial Way,Prince George,British Columbia,V2N 5S6,Canada,"53º 50' 39"" N, 122º 44' 0"" W",Sulfur Burner,Elemental Sulfur,145 MTPD,3/1 DA,,1966
+Sherrit Gordon Mines,,Fort Saskatchewan,Alberta,,Canada,"53° 43' 12"" N, 113° 11' 8"" W ",Sulfur Burner,Elemental Sulfur,570 MTPD,DA,,1974
+Minera Mexico SA de CV - Mexicana de Cobre - Plant No.1 ,,La Caridad,Sonora,,Mexico,"30º 29' 32"" N, 109º 38' 2"" W",Metallurgical,Copper,2614 MTPD,3/1 DA,,1988
+Minera Mexico SA de CV - Mexicana de Cobre - Plant No.2,,La Caridad,Sonora,,Mexico,"30º 29' 35"" N, 109º 38' 5"" W",Metallurgical,Copper,2300 MTPD,3/1 DA,,1996
+Molymex SA de CV,,Cumpas,Sonora,,Mexico,"30° 0' 40.5"" N, 109° 46' 57.5"" W",Metallurgical,Molybdenum,65 MTPD,2 SA,,2001
+Industrial Minera Mexico SA de CV,Cempol Eliseos 400 Col Lomas de Chapultepec,,Mexico DF,11000,Mexico,"22° 10' 13"" N, 101° 2' 10"" W",Metallurgical,Zinc,,,,
+Met-Mex Penoles SA de CV - Plant No.2,,Torreon,Coahuila,,Mexico,"25º 31' 48"" N, 103º 26' 33"" W",Metallurgical,Zinc,600 MTPD,DA,,1973
+Met-Mex Penoles SA de CV - Plant No.3,,Torreon,Coahuila,,Mexico,"25º 31' 44"" N, 103º 26' 31"" W",Metallurgical,Zinc,1162 MTPD,,,1991
+Agrogen,Road to Tlacote El Bajo,Qro. CP,,76000,Mexico,"20° 35' 41"" N, 100° 28' 14"" W",Sulfur Burner,Elemental Sulfur,,,,
+Fefermex SA de CV - Plant 1,,Cosoleacaque,Veracruz,,Mexico,"18°06'05""N 94°34'26""W",Sulfur Burner,Elemental Sulfur,"108,000 STPA",,,
+Fefermex SA de CV - Plant 2,,Cosoleacaque,Veracruz,,Mexico,"18°06'05""N 94°34'26""W",Sulfur Burner,Elemental Sulfur,"218,000 STPA",,,
+Fertilizantes de Minatitlan de CV,,Minatitlan ,Veracruz,,Mexico,"18° 0' 8"" N, 94° 34' 9"" W",Sulfur Burner,Elemental Sulfur,,3/1 DA,,
+Grupo Fertinal SA de CV - Plant I,Blvd Adolfo Lopez Mateos No. 2836,Lazaro ,Carden,,Mexico,"17° 55' 17"" N, 102° 10' 51"" W",Sulfur Burner,Elemental Sulfur,"660,000 MTPA",DA,,
+Grupo Fertinal SA de CV - Plant II,Blvd Adolfo Lopez Mateos No. 2836,Lazaro ,Carden,,Mexico,"17° 55' 20"" N, 102° 10' 52"" W",Sulfur Burner,Elemental Sulfur,"660,000 MTPA",DA,,
+Orbia Advance Corp SAB de CV,Km 4.5 Carretera Matamors a Reynosa,Ejido las Rusias Matamoros ,Tamaulipas,CP 87560 ,Mexico,"25° 54' 19"" N, 97° 33' 15"" W",Sulfur Burner,Elemental Sulfur,,,,
+Minera y Metalurgica del Boleo SA,Carretera Transpeninsular No.1 Km 5.5 al Norte de Santa Rosalia,Santa Rosalia,Baja California Sur,23920,Mexico,"27° 22' 5"" N, 112° 17' 50"" W",Sulfur Burner,Elemental Sulfur,2400 MTPD,DA,,2014
+Minera y Metalurgica del Boleo SA,Carretera Transpeninsular No.1 Km 5.5 al Norte de Santa Rosalia,Santa Rosalia,Baja California Sur,23920,Mexico,"27° 22' 5"" N, 112° 17' 50"" W",Sulfur Burner,Elemental Sulfur,300 MTPD,,,2015
+Univex SA - Plant 1 ,Carretera Panamericana Km 306 Tramo Salamanca - Celaya,Salamanca,Guanajuato,36700,Mexico,"20° 32' 17.5"" N, 101° 6' 1.5"" W",Sulfur Burner,Elemental Sulfur,160 MTPD,4 SA,,1972
+Univex SA - Plant 2,Carretera Panamericana Km 306 Tramo Salamanca - Celaya,Salamanca,Guanajuato,36700,Mexico,"20° 32' 17.5"" N, 101° 6' 0"" W",Sulfur Burner,Elemental Sulfur,160 MTPD,4 SA,,1972
